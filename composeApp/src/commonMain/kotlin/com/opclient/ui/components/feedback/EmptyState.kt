@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.opclient.ui.theme.AppThemeTokens
+import java.util.Locale
 
 @Composable
 fun EmptyState(
@@ -17,7 +18,7 @@ fun EmptyState(
     val typography = AppThemeTokens.typography
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         BasicText(
-            text = message.uppercase(),
+            text = message.uppercase(Locale.ROOT),
             style = typography.sectionLabel.copy(color = colors.textSecondary),
         )
     }

@@ -9,9 +9,9 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
+import java.util.Locale
 import com.opclient.ui.theme.AppThemeTokens
 
 @Composable
@@ -33,8 +33,8 @@ fun PrimaryButton(
         contentAlignment = Alignment.Center,
     ) {
         BasicText(
-            text = text.uppercase(),
-            style = typography.button.copy(color = Color.White),
+            text = text.uppercase(Locale.ROOT),
+            style = typography.button.copy(color = colors.onAccent),
         )
     }
 }

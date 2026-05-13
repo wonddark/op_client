@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
 import com.opclient.ui.theme.AppThemeTokens
+import java.util.Locale
 
 @Composable
 fun FilterChip(
@@ -35,7 +36,7 @@ fun FilterChip(
             .padding(horizontal = 10.dp, vertical = 4.dp),
     ) {
         BasicText(
-            text = label.uppercase(),
+            text = label.uppercase(Locale.ROOT),
             style = typography.tag.copy(color = textColor),
         )
     }

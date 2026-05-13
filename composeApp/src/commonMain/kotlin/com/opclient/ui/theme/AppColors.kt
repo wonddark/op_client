@@ -12,6 +12,7 @@ data class AppColors(
     val textSecondary: Color,
     val accent: Color,
     val accentLight: Color,
+    val onAccent: Color,
 )
 
 val LightColors = AppColors(
@@ -23,6 +24,7 @@ val LightColors = AppColors(
     textSecondary = Color(0xFF7A8C76),
     accent        = Color(0xFF3A7D44),
     accentLight   = Color(0xFFEEF1EB),
+    onAccent      = Color.White,
 )
 
 val DarkColors = AppColors(
@@ -34,6 +36,7 @@ val DarkColors = AppColors(
     textSecondary = Color(0xFF7A9C76),
     accent        = Color(0xFF6AB874),
     accentLight   = Color(0xFF1E3A1C),
+    onAccent      = Color(0xFF111C10),
 )
 
 val LocalAppColors = staticCompositionLocalOf<AppColors> {

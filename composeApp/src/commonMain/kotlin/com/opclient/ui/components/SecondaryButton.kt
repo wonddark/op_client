@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
 import com.opclient.ui.theme.AppThemeTokens
+import java.util.Locale
 
 @Composable
 fun SecondaryButton(
@@ -30,7 +31,7 @@ fun SecondaryButton(
         contentAlignment = Alignment.Center,
     ) {
         BasicText(
-            text = text.uppercase(),
+            text = text.uppercase(Locale.ROOT),
             style = typography.button.copy(color = colors.textSecondary),
         )
     }

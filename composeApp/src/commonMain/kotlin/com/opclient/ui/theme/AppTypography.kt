@@ -1,6 +1,7 @@
 package com.opclient.ui.theme
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -24,11 +25,12 @@ data class AppTypography(
 )
 
 @Composable
-fun jostFontFamily(): FontFamily = FontFamily(
-    Font(Res.font.Jost_Light,   weight = FontWeight.Light),
-    Font(Res.font.Jost_Regular, weight = FontWeight.Normal),
-    Font(Res.font.Jost_Medium,  weight = FontWeight.Medium),
-)
+fun jostFontFamily(): FontFamily {
+    val light   = Font(Res.font.Jost_Light,   weight = FontWeight.Light)
+    val regular = Font(Res.font.Jost_Regular, weight = FontWeight.Normal)
+    val medium  = Font(Res.font.Jost_Medium,  weight = FontWeight.Medium)
+    return remember(light, regular, medium) { FontFamily(light, regular, medium) }
+}
 
 fun buildTypography(fontFamily: FontFamily) = AppTypography(
     screenTitle  = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 14.sp, letterSpacing = 3.sp),

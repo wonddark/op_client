@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
 import com.opclient.ui.theme.AppThemeTokens
+import java.util.Locale
 
 @Composable
 fun BookCard(
@@ -51,7 +52,7 @@ fun BookCard(
         )
         Spacer(Modifier.height(2.dp))
         BasicText(
-            text = author.uppercase(),
+            text = author.uppercase(Locale.ROOT),
             style = typography.bookAuthor.copy(color = colors.textSecondary),
             maxLines = 1,
         )

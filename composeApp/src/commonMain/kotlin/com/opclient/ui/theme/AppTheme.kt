@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 
 @Composable
 fun AppTheme(
@@ -11,7 +12,8 @@ fun AppTheme(
     content: @Composable () -> Unit,
 ) {
     val colors = if (darkTheme) DarkColors else LightColors
-    val typography = buildTypography(jostFontFamily())
+    val fontFamily = jostFontFamily()
+    val typography = remember(fontFamily) { buildTypography(fontFamily) }
     CompositionLocalProvider(
         LocalAppColors provides colors,
         LocalAppTypography provides typography,

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
 import com.opclient.ui.theme.AppThemeTokens
+import java.util.Locale
 
 @Composable
 fun BookRow(
@@ -55,7 +56,7 @@ fun BookRow(
         Column(modifier = Modifier.weight(1f).padding(top = 2.dp)) {
             BasicText(text = title, style = typography.bookTitle.copy(color = colors.textPrimary))
             Spacer(Modifier.height(3.dp))
-            BasicText(text = author.uppercase(), style = typography.bookAuthor.copy(color = colors.textSecondary))
+            BasicText(text = author.uppercase(Locale.ROOT), style = typography.bookAuthor.copy(color = colors.textSecondary))
             if (subject != null) {
                 Spacer(Modifier.height(5.dp))
                 SubjectTag(text = subject)

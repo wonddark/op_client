@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
 import com.opclient.ui.theme.AppThemeTokens
+import java.util.Locale
 
 @Composable
 fun SubjectTag(
@@ -24,7 +25,7 @@ fun SubjectTag(
             .padding(horizontal = 7.dp, vertical = 2.dp),
     ) {
         BasicText(
-            text = text.uppercase(),
+            text = text.uppercase(Locale.ROOT),
             style = typography.tag.copy(color = colors.accent),
         )
     }
