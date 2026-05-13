@@ -1,0 +1,20 @@
+package com.opclient
+
+import android.app.Application
+import com.opclient.di.androidModule
+import com.opclient.di.commonModule
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+
+class OpClientApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        Napier.base(DebugAntilog())
+        startKoin {
+            androidContext(this@OpClientApplication)
+            modules(commonModule, androidModule)
+        }
+    }
+}
