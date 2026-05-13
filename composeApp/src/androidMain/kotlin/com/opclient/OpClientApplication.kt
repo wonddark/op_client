@@ -3,6 +3,7 @@ package com.opclient
 import android.app.Application
 import com.opclient.di.androidModule
 import com.opclient.di.commonModule
+import com.opclient.di.searchModule
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.android.ext.koin.androidContext
@@ -14,7 +15,7 @@ class OpClientApplication : Application() {
         Napier.base(DebugAntilog())
         startKoin {
             androidContext(this@OpClientApplication)
-            modules(commonModule, androidModule)
+            modules(commonModule, androidModule, searchModule)
         }
     }
 }
