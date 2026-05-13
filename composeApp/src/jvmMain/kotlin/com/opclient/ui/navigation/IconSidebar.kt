@@ -3,6 +3,9 @@ package com.opclient.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -53,7 +56,8 @@ fun IconSidebar(
                 modifier = Modifier
                     .size(28.dp)
                     .background(color = bgColor, shape = RoundedCornerShape(AppShapes.radius))
-                    .clickable { onSelect(destination) },
+                    .semantics { contentDescription = destination.label }
+                    .clickable(role = Role.Tab) { onSelect(destination) },
                 contentAlignment = Alignment.Center,
             ) {
                 DestinationIcon(destination = destination, tint = tint, size = 16.dp)

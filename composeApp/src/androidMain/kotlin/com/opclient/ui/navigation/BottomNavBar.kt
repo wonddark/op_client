@@ -3,6 +3,7 @@ package com.opclient.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -51,14 +52,17 @@ fun BottomNavBar(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .clickable { onSelect(destination) },
+                    .clickable(
+                        onClickLabel = destination.label,
+                        role = Role.Tab,
+                    ) { onSelect(destination) },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
                 DestinationIcon(destination = destination, tint = tint, size = 20.dp)
                 Spacer(Modifier.height(3.dp))
                 BasicText(
-                    text = destination.label.uppercase(),
+                    text = destination.label.uppercase(java.util.Locale.ROOT),
                     style = typography.navLabel.copy(
                         color = tint,
                         fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Light,
