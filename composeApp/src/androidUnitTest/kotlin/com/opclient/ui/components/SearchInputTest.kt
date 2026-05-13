@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
 import com.opclient.ui.theme.AppTheme
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -58,6 +59,6 @@ class SearchInputTest {
             }
         }
         composeTestRule.onNode(hasSetTextAction()).performImeAction()
-        assertEquals(true, searchTriggered)
+        assertTrue(searchTriggered)
     }
 }
