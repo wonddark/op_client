@@ -68,9 +68,9 @@ kotlin {
 
         androidUnitTest.dependencies {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.desktop.uiTestJUnit4)
-            implementation("junit:junit:4.13.2")
-            implementation("org.robolectric:robolectric:4.12.2")
+            implementation(compose.uiTestJUnit4)
+            implementation(libs.junit4)
+            implementation(libs.robolectric)
         }
     }
 }

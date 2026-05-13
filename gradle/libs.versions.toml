@@ -12,6 +12,8 @@ coil = "3.0.4"
 activity-compose = "1.9.3"
 detekt = "1.23.7"
 ktlint-gradle = "12.1.1"
+robolectric = "4.12.2"
+junit4 = "4.13.2"
 
 [libraries]
 # Ktor
@@ -43,6 +45,10 @@ coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.r
 
 # AndroidX
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+
+# Test
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+junit4 = { module = "junit:junit", version.ref = "junit4" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
