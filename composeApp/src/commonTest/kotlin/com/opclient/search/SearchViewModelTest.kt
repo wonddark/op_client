@@ -172,6 +172,36 @@ class SearchViewModelTest {
     }
 
     @Test
+    fun loadMore_failure_revertsToSuccessAndEmitsEffect() = runTest {
+        val page1 = (1..20).map { book(it) }
+        val error = ApiError.HttpError(503, "Service Unavailable")
+        val repo = object : SearchRepository {
+            override suspend fun search(query: String, offset: Int, limit: Int): Result<SearchResults, ApiError> =
+                if (offset == 0)
+                    Result.Success(SearchResults(query, 100, page1, 0))
+                else
+                    Result.Failure(error)
+        }
+        val vm = SearchViewModel(repo)
+        vm.onIntent(SearchIntent.QueryChanged("kotlin"))
+        vm.onIntent(SearchIntent.Search)
+        advanceUntilIdle()
+        assertEquals(20, vm.uiState.value.books.size)
+
+        vm.effects.test {
+            vm.onIntent(SearchIntent.LoadMore)
+            advanceUntilIdle()
+
+            assertEquals(SearchStatus.Success, vm.uiState.value.status)
+            assertFalse(vm.uiState.value.canLoadMore)
+            val effect = awaitItem()
+            assertIs<SearchEffect.SearchError>(effect)
+            assertEquals(error, effect.error)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun clearSearch_resetsState() = runTest {
         val books = (1..5).map { book(it) }
         val repo = FakeRepo(Result.Success(SearchResults("dune", 100, books, 0)))

@@ -43,7 +43,7 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
-    private val _effects = MutableSharedFlow<SearchEffect>(replay = 0)
+    private val _effects = MutableSharedFlow<SearchEffect>(replay = 0, extraBufferCapacity = 1)
     val effects: SharedFlow<SearchEffect> = _effects.asSharedFlow()
 
     fun onIntent(intent: SearchIntent) {
@@ -75,7 +75,7 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
                 }
                 is Result.Failure -> {
                     _uiState.update { it.copy(status = SearchStatus.Error) }
-                    _effects.emit(SearchEffect.SearchError(result.error))
+                    _effects.tryEmit(SearchEffect.SearchError(result.error))
                 }
             }
         }
@@ -95,15 +95,15 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
                         it.copy(
                             books = newBooks,
                             totalFound = data.totalFound,
-                            offset = nextOffset,
+                            offset = data.offset,
                             status = SearchStatus.Success,
                             canLoadMore = newBooks.size < data.totalFound,
                         )
                     }
                 }
                 is Result.Failure -> {
-                    _uiState.update { it.copy(status = SearchStatus.Success) }
-                    _effects.emit(SearchEffect.SearchError(result.error))
+                    _uiState.update { it.copy(status = SearchStatus.Success, canLoadMore = false) }
+                    _effects.tryEmit(SearchEffect.SearchError(result.error))
                 }
             }
         }
