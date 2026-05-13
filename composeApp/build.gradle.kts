@@ -42,6 +42,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.napier)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
@@ -62,6 +63,7 @@ kotlin {
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ktor.client.mock)
+            implementation(libs.turbine)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
