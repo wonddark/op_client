@@ -75,7 +75,10 @@ class ResultTest {
     fun flatMap_onFailure_shortCircuits() {
         val result: Result<Int, String> = Result.Failure("err")
         var called = false
-        val chained = result.flatMap { called = true; Result.Success(it) }
+        val chained = result.flatMap {
+            called = true
+            Result.Success(it)
+        }
         assertIs<Result.Failure<String>>(chained)
         assertEquals("err", chained.error)
         assertEquals(false, called)

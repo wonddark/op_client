@@ -14,36 +14,40 @@ abstract class ApiClient(
     @PublishedApi internal val baseUrl: String,
     @PublishedApi internal val httpClient: HttpClient,
 ) {
+    @Suppress("TooGenericExceptionCaught")
     internal suspend inline fun <reified T> get(
         path: String,
         queryParams: Map<String, String> = emptyMap(),
-    ): Result<T, ApiError> = try {
-        val response = httpClient.get(baseUrl + path) {
-            queryParams.forEach { (key, value) -> url.parameters.append(key, value) }
+    ): Result<T, ApiError> =
+        try {
+            val response = httpClient.get(baseUrl + path) {
+                queryParams.forEach { (key, value) -> url.parameters.append(key, value) }
+            }
+            Result.Success(response.body())
+        } catch (e: ClientRequestException) {
+            Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
+        } catch (e: ServerResponseException) {
+            Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
+        } catch (e: Exception) {
+            Result.Failure(ApiError.NetworkError(e))
         }
-        Result.Success(response.body())
-    } catch (e: ClientRequestException) {
-        Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
-    } catch (e: ServerResponseException) {
-        Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
-    } catch (e: Exception) {
-        Result.Failure(ApiError.NetworkError(e))
-    }
 
+    @Suppress("TooGenericExceptionCaught")
     internal suspend inline fun <reified T, reified B : Any> post(
         path: String,
         body: B,
-    ): Result<T, ApiError> = try {
-        val response = httpClient.post(baseUrl + path) {
-            contentType(ContentType.Application.Json)
-            setBody(body)
+    ): Result<T, ApiError> =
+        try {
+            val response = httpClient.post(baseUrl + path) {
+                contentType(ContentType.Application.Json)
+                setBody(body)
+            }
+            Result.Success(response.body())
+        } catch (e: ClientRequestException) {
+            Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
+        } catch (e: ServerResponseException) {
+            Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
+        } catch (e: Exception) {
+            Result.Failure(ApiError.NetworkError(e))
         }
-        Result.Success(response.body())
-    } catch (e: ClientRequestException) {
-        Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
-    } catch (e: ServerResponseException) {
-        Result.Failure(ApiError.HttpError(e.response.status.value, e.message ?: ""))
-    } catch (e: Exception) {
-        Result.Failure(ApiError.NetworkError(e))
-    }
 }

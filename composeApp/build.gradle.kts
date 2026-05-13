@@ -1,6 +1,6 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -100,7 +100,14 @@ detekt {
     buildUponDefaultConfig = true
 }
 
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    exclude { element -> element.file.absolutePath.contains("/build/generated/") }
+}
+
 ktlint {
     version.set("1.3.1")
     android.set(true)
+    filter {
+        exclude { entry -> entry.file.path.contains("/build/generated/") }
+    }
 }
