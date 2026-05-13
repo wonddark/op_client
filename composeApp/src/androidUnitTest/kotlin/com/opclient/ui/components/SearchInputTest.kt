@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
 import com.opclient.ui.theme.AppTheme
 import kotlin.test.assertEquals
@@ -42,5 +43,21 @@ class SearchInputTest {
             AppTheme { SearchInput(value = "Middlemarch", onValueChange = {}) }
         }
         composeTestRule.onNodeWithText("FIND BOOKS, AUTHORS…").assertDoesNotExist()
+    }
+
+    @Test
+    fun searchInput_callsOnSearch_whenImeActionPerformed() {
+        var searchTriggered = false
+        composeTestRule.setContent {
+            AppTheme {
+                SearchInput(
+                    value = "Dune",
+                    onValueChange = {},
+                    onSearch = { searchTriggered = true },
+                )
+            }
+        }
+        composeTestRule.onNode(hasSetTextAction()).performImeAction()
+        assertEquals(true, searchTriggered)
     }
 }

@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
 import com.opclient.ui.theme.AppThemeTokens
@@ -20,6 +23,7 @@ import com.opclient.ui.theme.AppThemeTokens
 fun SearchInput(
     value: String,
     onValueChange: (String) -> Unit,
+    onSearch: () -> Unit = {},
     placeholder: String = "FIND BOOKS, AUTHORS…",
     modifier: Modifier = Modifier,
 ) {
@@ -32,6 +36,8 @@ fun SearchInput(
         onValueChange = onValueChange,
         modifier = modifier.fillMaxWidth(),
         textStyle = typography.body.copy(color = colors.textPrimary),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
         decorationBox = { innerTextField ->
             Row(
                 modifier = Modifier
