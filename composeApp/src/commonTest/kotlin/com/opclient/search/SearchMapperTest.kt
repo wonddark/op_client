@@ -40,6 +40,12 @@ class SearchMapperTest {
     }
 
     @Test
+    fun docDto_blankAuthorName_usesUnknown() {
+        val dto = SearchDocDto(key = "/works/OL1W", authorName = listOf("  "))
+        assertEquals("Unknown", dto.toDomain().author)
+    }
+
+    @Test
     fun docDto_coverId_buildsCoverUrl() {
         val dto = SearchDocDto(key = "/works/OL1W", coverId = 12345)
         assertEquals("https://covers.openlibrary.org/b/id/12345-M.jpg", dto.toDomain().coverUrl)
