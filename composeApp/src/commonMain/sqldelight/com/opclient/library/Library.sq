@@ -1,0 +1,23 @@
+CREATE TABLE LibraryEntry (
+    work_key    TEXT    NOT NULL PRIMARY KEY,
+    title       TEXT    NOT NULL,
+    author_name TEXT,
+    cover_url   TEXT,
+    shelf       TEXT    NOT NULL,
+    added_at    INTEGER NOT NULL
+);
+
+getShelf:
+SELECT * FROM LibraryEntry WHERE shelf = ? ORDER BY added_at DESC;
+
+getShelfForBook:
+SELECT shelf FROM LibraryEntry WHERE work_key = ?;
+
+upsertEntry:
+INSERT OR REPLACE INTO LibraryEntry VALUES (?, ?, ?, ?, ?, ?);
+
+removeEntry:
+DELETE FROM LibraryEntry WHERE work_key = ?;
+
+updateShelf:
+UPDATE LibraryEntry SET shelf = ? WHERE work_key = ?;
