@@ -11,7 +11,7 @@ import com.opclient.ui.navigation.Destination
 import com.opclient.ui.theme.AppThemeTokens
 
 @Composable
-fun AppShell(
+actual fun AppShell(
     selectedDestination: Destination,
     onDestinationChange: (Destination) -> Unit,
     content: @Composable () -> Unit,
