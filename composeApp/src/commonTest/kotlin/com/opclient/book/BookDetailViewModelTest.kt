@@ -8,7 +8,7 @@ import com.opclient.book.domain.BookRepository
 import com.opclient.book.presentation.BookDetailEffect
 import com.opclient.book.presentation.BookDetailIntent
 import com.opclient.book.presentation.BookDetailViewModel
-import com.opclient.book.presentation.DetailStatus
+import com.opclient.presentation.DetailStatus
 import com.opclient.core.ApiError
 import com.opclient.core.Result
 import kotlinx.coroutines.Dispatchers

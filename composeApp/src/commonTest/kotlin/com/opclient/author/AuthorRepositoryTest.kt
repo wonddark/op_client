@@ -78,10 +78,12 @@ class AuthorRepositoryTest {
         val cache = AuthorCache()
         val repo = makeRepo(engine, cache)
 
-        repo.getAuthor("/authors/OL26320A")
-        repo.getAuthor("/authors/OL26320A")
+        repo.getAuthor("/authors/OL26320A")  // miss — calls profile + works (2 calls)
+        assertEquals(2, callCount)           // verify first call made 2 API calls
 
-        assertEquals(2, callCount)
+        repo.getAuthor("/authors/OL26320A")  // hit — must not call API
+
+        assertEquals(2, callCount)           // verify second call made NO additional API calls
     }
 
     @Test

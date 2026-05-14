@@ -7,7 +7,7 @@ import com.opclient.author.domain.AuthorRepository
 import com.opclient.author.presentation.AuthorDetailEffect
 import com.opclient.author.presentation.AuthorDetailIntent
 import com.opclient.author.presentation.AuthorDetailViewModel
-import com.opclient.book.presentation.DetailStatus
+import com.opclient.presentation.DetailStatus
 import com.opclient.core.ApiError
 import com.opclient.core.Result
 import kotlinx.coroutines.Dispatchers

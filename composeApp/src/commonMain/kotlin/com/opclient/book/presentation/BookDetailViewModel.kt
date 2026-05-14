@@ -7,6 +7,7 @@ import com.opclient.book.domain.BookDetail
 import com.opclient.book.domain.BookRepository
 import com.opclient.core.ApiError
 import com.opclient.core.Result
+import com.opclient.presentation.DetailStatus
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -15,8 +16,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-enum class DetailStatus { Loading, Success, Error }
 
 data class BookDetailUiState(
     val status: DetailStatus = DetailStatus.Loading,

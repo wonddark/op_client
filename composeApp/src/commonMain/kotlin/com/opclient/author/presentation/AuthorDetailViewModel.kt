@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.opclient.author.domain.AuthorDetail
 import com.opclient.author.domain.AuthorRepository
-import com.opclient.book.presentation.DetailStatus
+import com.opclient.presentation.DetailStatus
 import com.opclient.core.ApiError
 import com.opclient.core.Result
 import kotlinx.coroutines.flow.MutableSharedFlow

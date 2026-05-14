@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.opclient.book.presentation.DetailStatus
+import com.opclient.presentation.DetailStatus
 import com.opclient.ui.components.BookRow
 import com.opclient.ui.components.SecondaryButton
 import com.opclient.ui.components.SectionLabel
@@ -40,7 +40,7 @@ fun AuthorDetailScreen(
     val colors = AppThemeTokens.colors
     val typography = AppThemeTokens.typography
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(authorKey) {
         viewModel.onIntent(AuthorDetailIntent.Load(authorKey))
     }
 

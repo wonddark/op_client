@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.opclient.presentation.DetailStatus
 import com.opclient.ui.components.SecondaryButton
 import com.opclient.ui.components.SectionLabel
 import com.opclient.ui.components.SubjectTag
@@ -41,7 +42,7 @@ fun BookDetailScreen(
     val colors = AppThemeTokens.colors
     val typography = AppThemeTokens.typography
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(workKey) {
         viewModel.onIntent(BookDetailIntent.Load(workKey))
     }
 
