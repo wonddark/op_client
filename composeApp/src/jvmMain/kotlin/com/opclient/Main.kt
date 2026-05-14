@@ -2,6 +2,8 @@ package com.opclient
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.opclient.di.authorModule
+import com.opclient.di.bookModule
 import com.opclient.di.commonModule
 import com.opclient.di.desktopModule
 import com.opclient.di.searchModule
@@ -13,7 +15,7 @@ import org.koin.core.context.startKoin
 fun main() {
     Napier.base(DebugAntilog())
     startKoin {
-        modules(commonModule, desktopModule, searchModule)
+        modules(commonModule, desktopModule, searchModule, authorModule, bookModule)
     }
     application {
         Window(
