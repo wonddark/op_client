@@ -7,7 +7,10 @@ import kotlinx.datetime.Clock
 
 private const val DEFAULT_TTL_MS = 5 * 60 * 1_000L
 
-class SearchCache(private val ttlMs: Long = DEFAULT_TTL_MS) {
+class SearchCache(
+    private val ttlMs: Long = DEFAULT_TTL_MS,
+    private val timeSource: () -> Long = { Clock.System.now().toEpochMilliseconds() },
+) {
     private val mutex = Mutex()
     private val store = mutableMapOf<String, Pair<SearchResults, Long>>()
 
@@ -19,5 +22,5 @@ class SearchCache(private val ttlMs: Long = DEFAULT_TTL_MS) {
         store[key] = results to now()
     }
 
-    private fun now(): Long = Clock.System.now().toEpochMilliseconds()
+    private fun now(): Long = timeSource()
 }

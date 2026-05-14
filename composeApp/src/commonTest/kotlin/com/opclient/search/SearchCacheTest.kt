@@ -2,7 +2,6 @@ package com.opclient.search
 
 import com.opclient.search.data.SearchCache
 import com.opclient.search.domain.SearchResults
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,9 +28,10 @@ class SearchCacheTest {
 
     @Test
     fun get_expiredEntry_returnsNull() = runTest {
-        val cache = SearchCache(ttlMs = 1L)
+        var fakeTime = 0L
+        val cache = SearchCache(ttlMs = 100L, timeSource = { fakeTime })
         cache.put("dune:0", results())
-        delay(10)
+        fakeTime = 200L
         assertNull(cache.get("dune:0"))
     }
 
