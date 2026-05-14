@@ -15,6 +15,11 @@ class SearchApiClient(httpClient: HttpClient) :
     ): Result<SearchResponseDto, ApiError> =
         get<SearchResponseDto>(
             path = "/search.json",
-            queryParams = mapOf("q" to query, "offset" to "$offset", "limit" to "$limit"),
+            queryParams = mapOf(
+                "q" to query,
+                "offset" to "$offset",
+                "limit" to "$limit",
+                "fields" to "key,title,author_name,cover_i,first_publish_year",
+            ),
         )
 }
