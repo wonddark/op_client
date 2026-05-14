@@ -14,6 +14,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
@@ -34,7 +39,15 @@ fun SearchInput(
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().onKeyEvent { event ->
+            if (event.type == KeyEventType.KeyUp && event.key == Key.Enter) {
+                onSearch()
+                true
+            } else {
+                false
+            }
+        },
+        singleLine = true,
         textStyle = typography.body.copy(color = colors.textPrimary),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { onSearch() }),
