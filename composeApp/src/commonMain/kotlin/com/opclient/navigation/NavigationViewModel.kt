@@ -24,7 +24,7 @@ class NavigationViewModel : ViewModel() {
             when (destination) {
                 Destination.SEARCH -> listOf(Screen.Search)
                 Destination.BROWSE -> listOf(Screen.SubjectList)
-                Destination.LIBRARY -> listOf(Screen.Search)
+                Destination.LIBRARY -> listOf(Screen.Library)
             }
         }
     }

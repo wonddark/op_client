@@ -6,4 +6,5 @@ sealed class Screen {
     data class AuthorDetail(val authorKey: String) : Screen()
     data object SubjectList : Screen()
     data class SubjectDetail(val subjectName: String) : Screen()
+    data object Library : Screen()
 }

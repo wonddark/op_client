@@ -63,11 +63,11 @@ class NavigationViewModelTest {
     }
 
     @Test
-    fun navigateToTab_library_resetsToSearch() = runTest {
+    fun navigateToTab_library_resetsToLibrary() = runTest {
         val vm = NavigationViewModel()
         vm.navigateTo(Screen.BookDetail("/works/OL1W"))
         vm.navigateToTab(Destination.LIBRARY)
-        assertEquals(listOf(Screen.Search), vm.stack.value)
+        assertEquals(listOf(Screen.Library), vm.stack.value)
     }
 
     @Test

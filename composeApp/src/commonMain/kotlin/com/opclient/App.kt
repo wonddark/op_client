@@ -53,6 +53,9 @@ fun App() {
                 onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
                 onBack = { navVm.navigateBack() },
             )
+            Screen.Library -> {
+                // TODO: LibraryScreen will be added in Task 9
+            }
         }
     }
 }
