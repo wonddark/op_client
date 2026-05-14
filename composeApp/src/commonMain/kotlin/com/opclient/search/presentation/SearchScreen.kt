@@ -40,8 +40,9 @@ fun SearchScreen(
     val uiState by viewModel.uiState.collectAsState()
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val colors = AppThemeTokens.colors
+    val placeholderPainter = remember(colors.surface2) { ColorPainter(colors.surface2) }
 
-    LaunchedEffect(viewModel.effects) {
+    LaunchedEffect(viewModel) {
         viewModel.effects.collect { effect ->
             when (effect) {
                 is SearchEffect.SearchError -> {
@@ -60,7 +61,10 @@ fun SearchScreen(
         SearchInput(
             value = uiState.query,
             onValueChange = { viewModel.onIntent(SearchIntent.QueryChanged(it)) },
-            onSearch = { viewModel.onIntent(SearchIntent.Search) },
+            onSearch = {
+                errorMessage = null
+                viewModel.onIntent(SearchIntent.Search)
+            },
             modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
         )
 
@@ -77,7 +81,7 @@ fun SearchScreen(
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(uiState.books) { book ->
+                    items(uiState.books, key = { it.key }) { book ->
                         BookRow(
                             title = book.title,
                             author = book.author,
@@ -88,8 +92,8 @@ fun SearchScreen(
                                         model = book.coverUrl,
                                         contentDescription = null,
                                         contentScale = ContentScale.Crop,
-                                        placeholder = ColorPainter(colors.surface2),
-                                        error = ColorPainter(colors.surface2),
+                                        placeholder = placeholderPainter,
+                                        error = placeholderPainter,
                                         modifier = Modifier.fillMaxSize(),
                                     )
                                 } else {
@@ -99,7 +103,7 @@ fun SearchScreen(
                             onClick = { onBookClick(book.key) },
                         )
                     }
-                    if (uiState.canLoadMore) {
+                    if (uiState.canLoadMore && uiState.status != SearchStatus.LoadingMore) {
                         item {
                             Box(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),

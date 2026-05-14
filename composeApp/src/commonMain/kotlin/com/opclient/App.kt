@@ -21,7 +21,8 @@ fun App() {
     ) {
         when (selected) {
             Destination.SEARCH -> SearchScreen(onBookClick = {})
-            else -> Box(modifier = Modifier.fillMaxSize())
+            Destination.BROWSE,
+            Destination.LIBRARY -> Box(modifier = Modifier.fillMaxSize())
         }
     }
 }
