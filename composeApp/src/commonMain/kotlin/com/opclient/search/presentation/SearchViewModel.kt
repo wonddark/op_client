@@ -48,7 +48,9 @@ class SearchViewModel(private val repository: SearchRepository) : ViewModel() {
 
     fun onIntent(intent: SearchIntent) {
         when (intent) {
-            is SearchIntent.QueryChanged -> _uiState.update { it.copy(query = intent.query) }
+            is SearchIntent.QueryChanged -> _uiState.update {
+                if (intent.query.isEmpty()) SearchUiState() else it.copy(query = intent.query)
+            }
             SearchIntent.Search -> search()
             SearchIntent.LoadMore -> loadMore()
             SearchIntent.ClearSearch -> _uiState.value = SearchUiState()

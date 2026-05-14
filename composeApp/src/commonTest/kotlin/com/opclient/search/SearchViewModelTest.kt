@@ -56,6 +56,22 @@ class SearchViewModelTest {
     }
 
     @Test
+    fun queryChanged_emptyQuery_resetsToIdle() = runTest {
+        val books = (1..5).map { book(it) }
+        val repo = FakeRepo(Result.Success(SearchResults("xyz", 0, emptyList(), 0)))
+        val vm = SearchViewModel(repo)
+        vm.onIntent(SearchIntent.QueryChanged("xyz"))
+        vm.onIntent(SearchIntent.Search)
+        advanceUntilIdle()
+        assertEquals(SearchStatus.Empty, vm.uiState.value.status)
+
+        vm.onIntent(SearchIntent.QueryChanged(""))
+
+        assertEquals(SearchStatus.Idle, vm.uiState.value.status)
+        assertEquals("", vm.uiState.value.query)
+    }
+
+    @Test
     fun search_blankQuery_doesNothing() = runTest {
         val repo = FakeRepo()
         val vm = SearchViewModel(repo)
