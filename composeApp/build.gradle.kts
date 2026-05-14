@@ -90,6 +90,11 @@ sqldelight {
     databases {
         create("LibraryDatabase") {
             packageName.set("com.opclient.library")
+            srcDirs("src/commonMain/sqldelight/library")
+        }
+        create("SettingsDatabase") {
+            packageName.set("com.opclient.settings")
+            srcDirs("src/commonMain/sqldelight/settings")
         }
     }
 }
