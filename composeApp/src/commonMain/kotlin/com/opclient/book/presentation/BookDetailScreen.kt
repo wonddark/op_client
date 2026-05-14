@@ -22,6 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.opclient.presentation.DetailStatus
+import com.opclient.subject.domain.SubjectWork
+import com.opclient.ui.components.BookRow
 import com.opclient.ui.components.SecondaryButton
 import com.opclient.ui.components.SectionLabel
 import com.opclient.ui.components.SubjectTag
@@ -35,6 +37,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun BookDetailScreen(
     workKey: String,
     onAuthorClick: (String) -> Unit,
+    onBookClick: (String) -> Unit,
     onBack: () -> Unit,
     viewModel: BookDetailViewModel = koinViewModel(),
 ) {
@@ -107,6 +110,29 @@ fun BookDetailScreen(
                         style = typography.bookAuthor.copy(color = colors.textPrimary),
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     )
+                }
+                if (uiState.relatedWorks.isNotEmpty()) {
+                    SectionLabel(
+                        text = "More in ${uiState.relatedSubjectName}",
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    )
+                    uiState.relatedWorks.forEach { work ->
+                        BookRow(
+                            title = work.title,
+                            author = work.authorName ?: "",
+                            coverContent = {
+                                AsyncImage(
+                                    model = work.coverUrl,
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    placeholder = ColorPainter(colors.surface2),
+                                    error = ColorPainter(colors.surface2),
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            },
+                            onClick = { onBookClick(work.key) },
+                        )
+                    }
                 }
             }
         }

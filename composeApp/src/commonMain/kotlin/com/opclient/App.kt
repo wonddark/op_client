@@ -37,6 +37,7 @@ fun App() {
             is Screen.BookDetail -> BookDetailScreen(
                 workKey = screen.workKey,
                 onAuthorClick = { key -> navVm.navigateTo(Screen.AuthorDetail(key)) },
+                onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
                 onBack = { navVm.navigateBack() },
             )
             is Screen.AuthorDetail -> AuthorDetailScreen(
