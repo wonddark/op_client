@@ -1,20 +1,18 @@
-// composeApp/src/commonMain/kotlin/com/opclient/App.kt
 package com.opclient
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import com.opclient.author.presentation.AuthorDetailScreen
 import com.opclient.book.presentation.BookDetailScreen
 import com.opclient.navigation.NavigationViewModel
 import com.opclient.navigation.Screen
 import com.opclient.search.presentation.SearchScreen
+import com.opclient.subject.presentation.SubjectBrowseScreen
+import com.opclient.subject.presentation.SubjectDetailScreen
 import com.opclient.ui.AppShell
 import com.opclient.ui.navigation.Destination
 import org.koin.compose.viewmodel.koinViewModel
@@ -46,8 +44,14 @@ fun App() {
                 onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
                 onBack = { navVm.navigateBack() },
             )
-            Screen.SubjectList -> Box(Modifier.fillMaxSize())
-            is Screen.SubjectDetail -> Box(Modifier.fillMaxSize())
+            Screen.SubjectList -> SubjectBrowseScreen(
+                onSubjectClick = { name -> navVm.navigateTo(Screen.SubjectDetail(name)) },
+            )
+            is Screen.SubjectDetail -> SubjectDetailScreen(
+                subjectName = screen.subjectName,
+                onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
+                onBack = { navVm.navigateBack() },
+            )
         }
     }
 }
