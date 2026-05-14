@@ -1,6 +1,7 @@
 package com.opclient.navigation
 
 import androidx.lifecycle.ViewModel
+import com.opclient.ui.navigation.Destination
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,13 @@ class NavigationViewModel : ViewModel() {
         _stack.update { if (it.size > 1) it.dropLast(1) else it }
     }
 
-    fun navigateToTab() {
-        _stack.update { listOf(Screen.Search) }
+    fun navigateToTab(destination: Destination) {
+        _stack.update {
+            when (destination) {
+                Destination.SEARCH -> listOf(Screen.Search)
+                Destination.BROWSE -> listOf(Screen.SubjectList)
+                Destination.LIBRARY -> listOf(Screen.Search)
+            }
+        }
     }
 }

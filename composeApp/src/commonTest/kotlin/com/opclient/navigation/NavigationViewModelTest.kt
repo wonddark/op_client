@@ -1,5 +1,6 @@
 package com.opclient.navigation
 
+import com.opclient.ui.navigation.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -46,11 +47,26 @@ class NavigationViewModelTest {
     }
 
     @Test
-    fun navigateToTab_resetsStack() = runTest {
+    fun navigateToTab_search_resetsToSearch() = runTest {
         val vm = NavigationViewModel()
         vm.navigateTo(Screen.BookDetail("/works/OL1W"))
-        vm.navigateTo(Screen.AuthorDetail("/authors/OL1A"))
-        vm.navigateToTab()
+        vm.navigateToTab(Destination.SEARCH)
+        assertEquals(listOf(Screen.Search), vm.stack.value)
+    }
+
+    @Test
+    fun navigateToTab_browse_resetsToSubjectList() = runTest {
+        val vm = NavigationViewModel()
+        vm.navigateTo(Screen.BookDetail("/works/OL1W"))
+        vm.navigateToTab(Destination.BROWSE)
+        assertEquals(listOf(Screen.SubjectList), vm.stack.value)
+    }
+
+    @Test
+    fun navigateToTab_library_resetsToSearch() = runTest {
+        val vm = NavigationViewModel()
+        vm.navigateTo(Screen.BookDetail("/works/OL1W"))
+        vm.navigateToTab(Destination.LIBRARY)
         assertEquals(listOf(Screen.Search), vm.stack.value)
     }
 

@@ -29,7 +29,7 @@ fun App() {
         selectedDestination = selectedTab,
         onDestinationChange = { tab ->
             selectedTab = tab
-            navVm.navigateToTab()
+            navVm.navigateToTab(tab)
         },
     ) {
         when (val screen = stack.last()) {
@@ -46,6 +46,8 @@ fun App() {
                 onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
                 onBack = { navVm.navigateBack() },
             )
+            Screen.SubjectList -> Box(Modifier.fillMaxSize())
+            is Screen.SubjectDetail -> Box(Modifier.fillMaxSize())
         }
     }
 }
