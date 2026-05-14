@@ -1,0 +1,24 @@
+CREATE TABLE UserPreference (
+    key   TEXT NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL
+);
+
+CREATE TABLE GoalRow (
+    year   INTEGER NOT NULL PRIMARY KEY,
+    target INTEGER NOT NULL
+);
+
+getPreference:
+SELECT value FROM UserPreference WHERE key = ?;
+
+upsertPreference:
+INSERT OR REPLACE INTO UserPreference VALUES (?, ?);
+
+getGoal:
+SELECT * FROM GoalRow WHERE year = ?;
+
+upsertGoal:
+INSERT OR REPLACE INTO GoalRow VALUES (?, ?);
+
+deleteGoal:
+DELETE FROM GoalRow WHERE year = ?;
