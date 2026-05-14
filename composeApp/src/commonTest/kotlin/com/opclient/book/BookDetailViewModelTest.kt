@@ -1,4 +1,3 @@
-// composeApp/src/commonTest/kotlin/com/opclient/book/BookDetailViewModelTest.kt
 package com.opclient.book
 
 import app.cash.turbine.test
@@ -8,9 +7,12 @@ import com.opclient.book.domain.BookRepository
 import com.opclient.book.presentation.BookDetailEffect
 import com.opclient.book.presentation.BookDetailIntent
 import com.opclient.book.presentation.BookDetailViewModel
-import com.opclient.presentation.DetailStatus
 import com.opclient.core.ApiError
 import com.opclient.core.Result
+import com.opclient.presentation.DetailStatus
+import com.opclient.subject.domain.SubjectPage
+import com.opclient.subject.domain.SubjectRepository
+import com.opclient.subject.domain.SubjectWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -22,6 +24,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 class BookDetailViewModelTest {
 
@@ -30,12 +33,13 @@ class BookDetailViewModelTest {
     @BeforeTest fun setUp() { Dispatchers.setMain(testDispatcher) }
     @AfterTest fun tearDown() { Dispatchers.resetMain() }
 
-    private fun detail(key: String = "/works/OL1W") = BookDetail(
-        key = key, title = "Dune", description = "desc",
-        authors = listOf(AuthorRef("/authors/OL1A", "Frank Herbert")),
-        subjects = listOf("SF"), firstPublishDate = "1965",
-        coverUrl = "https://example.com/cover.jpg",
-    )
+    private fun detail(key: String = "/works/OL1W", subjects: List<String> = listOf("Science Fiction")) =
+        BookDetail(
+            key = key, title = "Dune", description = "desc",
+            authors = listOf(AuthorRef("/authors/OL1A", "Frank Herbert")),
+            subjects = subjects, firstPublishDate = "1965",
+            coverUrl = "https://example.com/cover.jpg",
+        )
 
     private fun successRepo(d: BookDetail = detail()) = object : BookRepository {
         override suspend fun getBook(workKey: String): Result<BookDetail, ApiError> = Result.Success(d)
@@ -45,9 +49,27 @@ class BookDetailViewModelTest {
         override suspend fun getBook(workKey: String): Result<BookDetail, ApiError> = Result.Failure(error)
     }
 
+    private fun subjectRepo(
+        result: Result<SubjectPage, ApiError> = Result.Success(
+            SubjectPage(
+                "Science Fiction", 50,
+                listOf(
+                    SubjectWork("/works/OL2W", "Foundation", "Asimov", null),
+                    SubjectWork("/works/OL1W", "Dune", "Herbert", null),
+                ),
+            ),
+        ),
+    ) = object : SubjectRepository {
+        override suspend fun getSubjectPage(subjectName: String, limit: Int, offset: Int) = result
+    }
+
+    private fun emptySubjectRepo() = subjectRepo(
+        Result.Success(SubjectPage("Science Fiction", 0, emptyList())),
+    )
+
     @Test
     fun load_setsLoadingThenSuccess() = runTest {
-        val vm = BookDetailViewModel(successRepo())
+        val vm = BookDetailViewModel(successRepo(), emptySubjectRepo())
         vm.onIntent(BookDetailIntent.Load("/works/OL1W"))
         advanceUntilIdle()
         assertEquals(DetailStatus.Success, vm.uiState.value.status)
@@ -57,7 +79,7 @@ class BookDetailViewModelTest {
     @Test
     fun load_onFailure_setsErrorAndEmitsEffect() = runTest {
         val error = ApiError.HttpError(500, "Server Error")
-        val vm = BookDetailViewModel(failingRepo(error))
+        val vm = BookDetailViewModel(failingRepo(error), emptySubjectRepo())
 
         vm.effects.test {
             vm.onIntent(BookDetailIntent.Load("/works/OL1W"))
@@ -81,7 +103,7 @@ class BookDetailViewModelTest {
                 else Result.Success(detail())
             }
         }
-        val vm = BookDetailViewModel(repo)
+        val vm = BookDetailViewModel(repo, emptySubjectRepo())
         vm.onIntent(BookDetailIntent.Load("/works/OL1W"))
         advanceUntilIdle()
         assertEquals(DetailStatus.Error, vm.uiState.value.status)
@@ -102,9 +124,59 @@ class BookDetailViewModelTest {
                 return Result.Success(detail())
             }
         }
-        val vm = BookDetailViewModel(repo)
+        val vm = BookDetailViewModel(repo, emptySubjectRepo())
         vm.onIntent(BookDetailIntent.Retry)
         advanceUntilIdle()
         assertEquals(0, callCount)
+    }
+
+    @Test
+    fun load_populatesRelatedWorksAfterSuccess() = runTest {
+        val vm = BookDetailViewModel(successRepo(), subjectRepo())
+        vm.onIntent(BookDetailIntent.Load("/works/OL1W"))
+        advanceUntilIdle()
+
+        assertEquals(DetailStatus.Success, vm.uiState.value.status)
+        assertEquals("Science Fiction", vm.uiState.value.relatedSubjectName)
+        assertTrue(vm.uiState.value.relatedWorks.isNotEmpty())
+    }
+
+    @Test
+    fun load_relatedWorks_excludesCurrentBook() = runTest {
+        val vm = BookDetailViewModel(successRepo(), subjectRepo())
+        vm.onIntent(BookDetailIntent.Load("/works/OL1W"))
+        advanceUntilIdle()
+
+        val relatedKeys = vm.uiState.value.relatedWorks.map { it.key }
+        assertTrue(!relatedKeys.contains("/works/OL1W"), "Related works should not include current book")
+    }
+
+    @Test
+    fun load_subjectApiFailure_statusRemainsSuccess() = runTest {
+        val vm = BookDetailViewModel(
+            successRepo(),
+            subjectRepo(Result.Failure(ApiError.HttpError(500, "Subject Error"))),
+        )
+        vm.onIntent(BookDetailIntent.Load("/works/OL1W"))
+        advanceUntilIdle()
+
+        assertEquals(DetailStatus.Success, vm.uiState.value.status)
+        assertTrue(vm.uiState.value.relatedWorks.isEmpty())
+    }
+
+    @Test
+    fun load_emptySubjects_skipsSubjectFetch() = runTest {
+        var subjectCallCount = 0
+        val repo = object : SubjectRepository {
+            override suspend fun getSubjectPage(subjectName: String, limit: Int, offset: Int): Result<SubjectPage, ApiError> {
+                subjectCallCount++
+                return Result.Success(SubjectPage("", 0, emptyList()))
+            }
+        }
+        val vm = BookDetailViewModel(successRepo(detail(subjects = emptyList())), repo)
+        vm.onIntent(BookDetailIntent.Load("/works/OL1W"))
+        advanceUntilIdle()
+
+        assertEquals(0, subjectCallCount)
     }
 }

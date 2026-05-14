@@ -13,5 +13,5 @@ val bookModule: Module = module {
     single { BookCache() }
     factory { BookApiClient(get()) }
     single<BookRepository> { BookRepositoryImpl(apiClient = get(), cache = get(), authorRepository = get()) }
-    viewModel { BookDetailViewModel(get()) }
+    viewModel { BookDetailViewModel(get(), get()) }
 }
