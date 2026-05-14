@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.opclient.author.presentation.AuthorDetailScreen
 import com.opclient.book.presentation.BookDetailScreen
+import com.opclient.library.presentation.LibraryScreen
 import com.opclient.navigation.NavigationViewModel
 import com.opclient.navigation.Screen
 import com.opclient.search.presentation.SearchScreen
@@ -53,9 +54,9 @@ fun App() {
                 onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
                 onBack = { navVm.navigateBack() },
             )
-            Screen.Library -> {
-                // TODO: LibraryScreen will be added in Task 9
-            }
+            Screen.Library -> LibraryScreen(
+                onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
+            )
         }
     }
 }
