@@ -6,6 +6,7 @@ import com.opclient.di.authorModule
 import com.opclient.di.bookModule
 import com.opclient.di.commonModule
 import com.opclient.di.desktopModule
+import com.opclient.di.libraryModule
 import com.opclient.di.searchModule
 import com.opclient.di.subjectModule
 import com.opclient.ui.theme.AppTheme
@@ -16,7 +17,7 @@ import org.koin.core.context.startKoin
 fun main() {
     Napier.base(DebugAntilog())
     startKoin {
-        modules(commonModule, desktopModule, searchModule, authorModule, subjectModule, bookModule)
+        modules(commonModule, desktopModule, searchModule, authorModule, subjectModule, libraryModule, bookModule)
     }
     application {
         Window(
