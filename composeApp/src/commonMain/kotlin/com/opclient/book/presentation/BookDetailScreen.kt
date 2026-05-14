@@ -2,9 +2,11 @@
 package com.opclient.book.presentation
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.opclient.presentation.DetailStatus
 import com.opclient.subject.domain.SubjectWork
+import com.opclient.library.domain.Shelf
 import com.opclient.ui.components.BookRow
+import com.opclient.ui.components.PrimaryButton
 import com.opclient.ui.components.SecondaryButton
 import com.opclient.ui.components.SectionLabel
 import com.opclient.ui.components.SubjectTag
@@ -101,6 +105,26 @@ fun BookDetailScreen(
                     FlowRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
                         book.subjects.take(8).forEach { subject ->
                             SubjectTag(text = subject, modifier = Modifier.padding(end = 4.dp, bottom = 4.dp))
+                        }
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Shelf.entries.forEach { shelf ->
+                        if (shelf == uiState.currentShelf) {
+                            PrimaryButton(
+                                text = shelf.label,
+                                onClick = { viewModel.onIntent(BookDetailIntent.RemoveFromLibrary) },
+                            )
+                        } else {
+                            SecondaryButton(
+                                text = shelf.label,
+                                onClick = { viewModel.onIntent(BookDetailIntent.SetShelf(shelf)) },
+                            )
                         }
                     }
                 }
