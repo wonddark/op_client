@@ -5,6 +5,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.CookiesStorage
+import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -18,8 +20,16 @@ private const val HTTP_CLIENT_ERROR_MAX = 499
 private const val HTTP_SERVER_ERROR_MIN = 500
 private const val HTTP_SERVER_ERROR_MAX = 599
 
-internal fun buildHttpClient(engine: HttpClientEngine): HttpClient =
+internal fun buildHttpClient(
+    engine: HttpClientEngine,
+    cookiesStorage: CookiesStorage? = null,
+): HttpClient =
     HttpClient(engine) {
+        if (cookiesStorage != null) {
+            install(HttpCookies) {
+                storage = cookiesStorage
+            }
+        }
         install(ContentNegotiation) {
             json(
                 Json {
