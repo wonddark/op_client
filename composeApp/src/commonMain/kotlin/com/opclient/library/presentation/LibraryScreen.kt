@@ -25,6 +25,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun LibraryScreen(
     onBookClick: (String) -> Unit,
     onProfileClick: () -> Unit,
+    onListsClick: () -> Unit,
     viewModel: LibraryViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -38,6 +39,7 @@ fun LibraryScreen(
                 .padding(horizontal = 16.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.End,
         ) {
+            SecondaryButton(text = "MY LISTS", onClick = onListsClick)
             SecondaryButton(text = "PROFILE & SYNC", onClick = onProfileClick)
         }
 

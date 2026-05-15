@@ -9,4 +9,6 @@ sealed class Screen {
     data object Library : Screen()
     data object Profile : Screen()
     data object RecentChanges : Screen()
+    data object Lists : Screen()
+    data object Login : Screen()
 }

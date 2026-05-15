@@ -6,9 +6,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.opclient.auth.presentation.LoginScreen
 import com.opclient.author.presentation.AuthorDetailScreen
 import com.opclient.book.presentation.BookDetailScreen
 import com.opclient.library.presentation.LibraryScreen
+import com.opclient.lists.presentation.ListsScreen
 import com.opclient.navigation.NavigationViewModel
 import com.opclient.profile.presentation.ProfileScreen
 import com.opclient.navigation.Screen
@@ -59,6 +61,7 @@ fun App() {
             Screen.Library -> LibraryScreen(
                 onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
                 onProfileClick = { navVm.navigateTo(Screen.Profile) },
+                onListsClick = { navVm.navigateTo(Screen.Lists) },
             )
             Screen.Profile -> ProfileScreen(
                 onBack = { navVm.navigateBack() },
@@ -66,6 +69,12 @@ fun App() {
             Screen.RecentChanges -> RecentChangesScreen(
                 onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
                 onAuthorClick = { key -> navVm.navigateTo(Screen.AuthorDetail(key)) },
+            )
+            Screen.Lists -> ListsScreen(
+                onBack = { navVm.navigateBack() },
+            )
+            Screen.Login -> LoginScreen(
+                onLoginSuccess = { navVm.navigateBack() },
             )
         }
     }

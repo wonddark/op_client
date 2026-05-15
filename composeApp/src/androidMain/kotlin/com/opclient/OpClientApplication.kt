@@ -2,10 +2,12 @@ package com.opclient
 
 import android.app.Application
 import com.opclient.di.androidModule
+import com.opclient.di.authModule
 import com.opclient.di.authorModule
 import com.opclient.di.bookModule
 import com.opclient.di.commonModule
 import com.opclient.di.libraryModule
+import com.opclient.di.listsModule
 import com.opclient.di.profileModule
 import com.opclient.di.recentChangesModule
 import com.opclient.di.searchInsideModule
@@ -23,7 +25,9 @@ class OpClientApplication : Application() {
         Napier.base(DebugAntilog())
         startKoin {
             androidContext(this@OpClientApplication)
-            modules(commonModule, androidModule, settingsModule, searchModule, searchInsideModule, authorModule, subjectModule, libraryModule, bookModule, profileModule, recentChangesModule)
+            modules(commonModule, androidModule, settingsModule, searchModule, searchInsideModule,
+                    authorModule, subjectModule, libraryModule, bookModule, profileModule,
+                    recentChangesModule, authModule, listsModule)
         }
     }
 }
