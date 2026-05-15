@@ -129,6 +129,22 @@ android {
     }
 }
 
+val generateAppIcon by tasks.registering(JavaExec::class) {
+    dependsOn("compileKotlinJvm")
+    val outDir = layout.buildDirectory.dir("generated/icon")
+    outputs.dir(outDir)
+    inputs.dir(project.file("src/jvmMain/kotlin/com/opclient/icon"))
+    doFirst { outDir.get().asFile.mkdirs() }
+    classpath(
+        kotlin.targets
+            .named<org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget>("jvm")
+            .get().compilations["main"].output.classesDirs,
+        configurations["jvmRuntimeClasspath"],
+    )
+    mainClass.set("com.opclient.icon.GenerateIconKt")
+    args(outDir.get().asFile.absolutePath)
+}
+
 compose.desktop {
     application {
         mainClass = "com.opclient.MainKt"
