@@ -178,6 +178,7 @@ compose.desktop {
 afterEvaluate {
     tasks.named("packageDeb") { dependsOn(generateAppIcon) }
     tasks.named("packageRpm") { dependsOn(generateAppIcon) }
+    tasks.named("packageUberJarForCurrentOS") { dependsOn(generateAppIcon) }
 }
 
 compose.resources {
