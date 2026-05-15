@@ -59,7 +59,7 @@ class ListsViewModel(private val repository: ListsRepository) : ViewModel() {
             _uiState.update { it.copy(isLoading = true, error = null) }
             when (val result = repository.getLists()) {
                 is Result.Success -> _uiState.update { it.copy(lists = result.value, isLoading = false) }
-                is Result.Failure -> _uiState.update { it.copy(isLoading = false) }
+                is Result.Failure -> _uiState.update { it.copy(isLoading = false, error = "Failed to load lists") }
             }
         }
     }
