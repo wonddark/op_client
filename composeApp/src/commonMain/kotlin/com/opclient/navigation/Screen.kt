@@ -8,4 +8,5 @@ sealed class Screen {
     data class SubjectDetail(val subjectName: String) : Screen()
     data object Library : Screen()
     data object Profile : Screen()
+    data object RecentChanges : Screen()
 }

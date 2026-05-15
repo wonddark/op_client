@@ -59,6 +59,28 @@ fun DestinationIcon(
                     )
                 }
             }
+            Destination.CHANGES -> {
+                drawCircle(
+                    color = tint,
+                    radius = s * 0.35f,
+                    center = Offset(s * 0.5f, s * 0.5f),
+                    style = Stroke(width = strokeWidth),
+                )
+                drawLine(
+                    color = tint,
+                    start = Offset(s * 0.5f, s * 0.5f),
+                    end = Offset(s * 0.5f, s * 0.26f),
+                    strokeWidth = strokeWidth,
+                    cap = StrokeCap.Round,
+                )
+                drawLine(
+                    color = tint,
+                    start = Offset(s * 0.5f, s * 0.5f),
+                    end = Offset(s * 0.68f, s * 0.5f),
+                    strokeWidth = strokeWidth,
+                    cap = StrokeCap.Round,
+                )
+            }
         }
     }
 }

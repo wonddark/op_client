@@ -62,6 +62,7 @@ fun App() {
             Screen.Profile -> ProfileScreen(
                 onBack = { navVm.navigateBack() },
             )
+            Screen.RecentChanges -> {}
         }
     }
 }
