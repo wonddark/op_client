@@ -8,6 +8,7 @@ import java.io.File
 import javax.imageio.ImageIO
 
 fun main(args: Array<String>) {
+    require(args.isNotEmpty()) { "Usage: GenerateIcon <output-dir>" }
     val outDir = File(args[0])
     outDir.mkdirs()
 
@@ -51,6 +52,6 @@ fun main(args: Array<String>) {
 
     g.dispose()
     val out = File(outDir, "op_client.png")
-    ImageIO.write(img, "PNG", out)
+    check(ImageIO.write(img, "PNG", out)) { "ImageIO failed to write PNG — no writer found for format PNG" }
     println("Icon written to ${out.absolutePath}")
 }
