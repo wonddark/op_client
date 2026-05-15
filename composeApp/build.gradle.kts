@@ -75,7 +75,7 @@ kotlin {
 
         androidUnitTest.dependencies {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.uiTestJUnit4)
+            implementation(compose.desktop.uiTestJUnit4)
             implementation(libs.junit4)
             implementation(libs.robolectric)
         }
@@ -145,15 +145,39 @@ val generateAppIcon by tasks.registering(JavaExec::class) {
     args(outDir.get().asFile.absolutePath)
 }
 
+val jdkForPackaging: Provider<JavaLauncher> = javaToolchains.launcherFor {
+    languageVersion.set(JavaLanguageVersion.of(17))
+    vendor.set(JvmVendorSpec.AZUL)
+}
+
 compose.desktop {
     application {
         mainClass = "com.opclient.MainKt"
+        javaHome = jdkForPackaging.map { it.metadata.installationPath.asFile.absolutePath }.get()
         nativeDistributions {
             targetFormats(TargetFormat.Deb, TargetFormat.Rpm)
-            packageName = "op_client"
+            packageName = "op-client"
             packageVersion = "1.0.0"
+            description = "OpenLibrary desktop client"
+            vendor = "op_client"
+            copyright = "© 2026 op_client contributors"
+            licenseFile.set(rootProject.file("LICENSE"))
+
+            linux {
+                iconFile.set(
+                    layout.buildDirectory.file("generated/icon/op_client.png")
+                )
+                menuGroup = "Office;Education;"
+                appCategory = "Education"
+                debMaintainer = "op_client"
+                rpmLicenseType = "MIT"
+            }
         }
     }
+}
+afterEvaluate {
+    tasks.named("packageDeb") { dependsOn(generateAppIcon) }
+    tasks.named("packageRpm") { dependsOn(generateAppIcon) }
 }
 
 compose.resources {
