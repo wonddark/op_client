@@ -22,3 +22,6 @@ INSERT OR REPLACE INTO GoalRow VALUES (?, ?);
 
 deleteGoal:
 DELETE FROM GoalRow WHERE year = ?;
+
+deletePreference:
+DELETE FROM UserPreference WHERE key = ?;

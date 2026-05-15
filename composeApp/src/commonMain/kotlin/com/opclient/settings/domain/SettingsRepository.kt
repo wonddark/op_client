@@ -6,4 +6,7 @@ interface SettingsRepository {
     suspend fun getReadingGoal(year: Int): ReadingGoal?
     suspend fun setReadingGoal(year: Int, target: Int)
     suspend fun clearReadingGoal(year: Int)
+    suspend fun getSessionCookie(): String?
+    suspend fun setSessionCookie(value: String)
+    suspend fun clearSessionCookie()
 }

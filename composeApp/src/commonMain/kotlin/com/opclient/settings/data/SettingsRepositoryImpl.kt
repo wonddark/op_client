@@ -10,6 +10,7 @@ class SettingsRepositoryImpl(private val db: SettingsDatabase) : SettingsReposit
 
     private companion object {
         const val KEY_USERNAME = "username"
+        const val KEY_SESSION_COOKIE = "session_cookie"
     }
 
     override suspend fun getUsername(): String? = withContext(Dispatchers.IO) {
@@ -31,5 +32,17 @@ class SettingsRepositoryImpl(private val db: SettingsDatabase) : SettingsReposit
 
     override suspend fun clearReadingGoal(year: Int): Unit = withContext(Dispatchers.IO) {
         db.settingsQueries.deleteGoal(year.toLong())
+    }
+
+    override suspend fun getSessionCookie(): String? = withContext(Dispatchers.IO) {
+        db.settingsQueries.getPreference(KEY_SESSION_COOKIE).executeAsOneOrNull()
+    }
+
+    override suspend fun setSessionCookie(value: String): Unit = withContext(Dispatchers.IO) {
+        db.settingsQueries.upsertPreference(KEY_SESSION_COOKIE, value)
+    }
+
+    override suspend fun clearSessionCookie(): Unit = withContext(Dispatchers.IO) {
+        db.settingsQueries.deletePreference(KEY_SESSION_COOKIE)
     }
 }

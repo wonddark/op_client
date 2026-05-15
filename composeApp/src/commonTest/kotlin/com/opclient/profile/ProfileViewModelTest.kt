@@ -52,6 +52,9 @@ class ProfileViewModelTest {
         override suspend fun getReadingGoal(year: Int) = if (storedGoal?.year == year) storedGoal else null
         override suspend fun setReadingGoal(year: Int, target: Int) { storedGoal = ReadingGoal(year, target) }
         override suspend fun clearReadingGoal(year: Int) { storedGoal = null }
+        override suspend fun getSessionCookie(): String? = null
+        override suspend fun setSessionCookie(value: String) {}
+        override suspend fun clearSessionCookie() {}
     }
 
     private fun fakeProfile(displayName: String = "Test User") = object : UserProfileRepository {
