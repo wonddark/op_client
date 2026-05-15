@@ -7,6 +7,8 @@ import com.opclient.di.bookModule
 import com.opclient.di.commonModule
 import com.opclient.di.libraryModule
 import com.opclient.di.profileModule
+import com.opclient.di.recentChangesModule
+import com.opclient.di.searchInsideModule
 import com.opclient.di.searchModule
 import com.opclient.di.settingsModule
 import com.opclient.di.subjectModule
@@ -21,7 +23,7 @@ class OpClientApplication : Application() {
         Napier.base(DebugAntilog())
         startKoin {
             androidContext(this@OpClientApplication)
-            modules(commonModule, androidModule, settingsModule, searchModule, authorModule, subjectModule, libraryModule, bookModule, profileModule)
+            modules(commonModule, androidModule, settingsModule, searchModule, searchInsideModule, authorModule, subjectModule, libraryModule, bookModule, profileModule, recentChangesModule)
         }
     }
 }

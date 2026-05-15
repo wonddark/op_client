@@ -8,6 +8,8 @@ import com.opclient.di.commonModule
 import com.opclient.di.desktopModule
 import com.opclient.di.libraryModule
 import com.opclient.di.profileModule
+import com.opclient.di.recentChangesModule
+import com.opclient.di.searchInsideModule
 import com.opclient.di.searchModule
 import com.opclient.di.settingsModule
 import com.opclient.di.subjectModule
@@ -19,7 +21,7 @@ import org.koin.core.context.startKoin
 fun main() {
     Napier.base(DebugAntilog())
     startKoin {
-        modules(commonModule, desktopModule, settingsModule, searchModule, authorModule, subjectModule, libraryModule, bookModule, profileModule)
+        modules(commonModule, desktopModule, settingsModule, searchModule, searchInsideModule, authorModule, subjectModule, libraryModule, bookModule, profileModule, recentChangesModule)
     }
     application {
         Window(
