@@ -74,7 +74,7 @@ fun ListsScreen(
 
             uiState.error?.let { ErrorState(message = it) }
         } else {
-            val selected = uiState.selectedList!!
+            val selected = uiState.selectedList ?: return@Column
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
