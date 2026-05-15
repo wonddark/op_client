@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.opclient.library.domain.Shelf
 import com.opclient.ui.components.BookRow
 import com.opclient.ui.components.FilterChip
+import com.opclient.ui.components.SecondaryButton
 import com.opclient.ui.components.feedback.EmptyState
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LibraryScreen(
     onBookClick: (String) -> Unit,
+    onProfileClick: () -> Unit,
     viewModel: LibraryViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -29,6 +32,15 @@ fun LibraryScreen(
     val entries = uiState.entries
 
     Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            SecondaryButton(text = "PROFILE & SYNC", onClick = onProfileClick)
+        }
+
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),

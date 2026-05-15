@@ -10,6 +10,7 @@ import com.opclient.author.presentation.AuthorDetailScreen
 import com.opclient.book.presentation.BookDetailScreen
 import com.opclient.library.presentation.LibraryScreen
 import com.opclient.navigation.NavigationViewModel
+import com.opclient.profile.presentation.ProfileScreen
 import com.opclient.navigation.Screen
 import com.opclient.search.presentation.SearchScreen
 import com.opclient.subject.presentation.SubjectBrowseScreen
@@ -56,6 +57,10 @@ fun App() {
             )
             Screen.Library -> LibraryScreen(
                 onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
+                onProfileClick = { navVm.navigateTo(Screen.Profile) },
+            )
+            Screen.Profile -> ProfileScreen(
+                onBack = { navVm.navigateBack() },
             )
         }
     }
