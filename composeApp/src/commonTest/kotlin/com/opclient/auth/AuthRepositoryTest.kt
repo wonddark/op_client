@@ -15,6 +15,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import kotlinx.coroutines.test.runTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -22,18 +23,23 @@ import kotlin.test.assertNull
 
 class AuthRepositoryTest {
 
-    private val fakeSettings = object : SettingsRepository {
-        private var username: String? = null
-        private var session: String? = null
-        private var goals: Map<Int, ReadingGoal> = emptyMap()
-        override suspend fun getUsername() = username
-        override suspend fun setUsername(value: String) { username = value }
-        override suspend fun getReadingGoal(year: Int) = goals[year]
-        override suspend fun setReadingGoal(year: Int, target: Int) { goals = goals + (year to ReadingGoal(year, target)) }
-        override suspend fun clearReadingGoal(year: Int) { goals = goals - year }
-        override suspend fun getSessionCookie() = session
-        override suspend fun setSessionCookie(value: String) { session = value }
-        override suspend fun clearSessionCookie() { session = null }
+    private lateinit var fakeSettings: SettingsRepository
+
+    @BeforeTest
+    fun setUp() {
+        fakeSettings = object : SettingsRepository {
+            private var username: String? = null
+            private var session: String? = null
+            private var goals: Map<Int, ReadingGoal> = emptyMap()
+            override suspend fun getUsername() = username
+            override suspend fun setUsername(value: String) { username = value }
+            override suspend fun getReadingGoal(year: Int) = goals[year]
+            override suspend fun setReadingGoal(year: Int, target: Int) { goals = goals + (year to ReadingGoal(year, target)) }
+            override suspend fun clearReadingGoal(year: Int) { goals = goals - year }
+            override suspend fun getSessionCookie() = session
+            override suspend fun setSessionCookie(value: String) { session = value }
+            override suspend fun clearSessionCookie() { session = null }
+        }
     }
 
     private fun makeRepo(engine: MockEngine): AuthRepository {
