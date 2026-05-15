@@ -46,6 +46,7 @@ class RecentChangesViewModel(
     }
 
     private fun refresh() {
+        if (_uiState.value.isLoading) return
         _uiState.update { it.copy(changes = emptyList()) }
         fetch()
     }

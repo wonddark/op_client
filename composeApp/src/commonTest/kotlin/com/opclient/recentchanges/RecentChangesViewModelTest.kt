@@ -61,6 +61,22 @@ class RecentChangesViewModelTest {
     }
 
     @Test
+    fun load_whenAlreadyLoaded_doesNotReFetch() = runTest {
+        var callCount = 0
+        val repo = object : RecentChangesRepository {
+            override suspend fun getRecentChanges(): Result<List<RecentChange>, ApiError> {
+                callCount++
+                return Result.Success(listOf(change("1")))
+            }
+        }
+        val vm = RecentChangesViewModel(repo)
+        advanceUntilIdle()
+        vm.onIntent(RecentChangesIntent.Load)
+        advanceUntilIdle()
+        assertEquals(1, callCount)
+    }
+
+    @Test
     fun error_setsErrorState() = runTest {
         val vm = RecentChangesViewModel(
             fakeRepo(Result.Failure(ApiError.HttpError(500, "Server Error")))
