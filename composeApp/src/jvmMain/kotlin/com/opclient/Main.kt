@@ -7,7 +7,9 @@ import com.opclient.di.bookModule
 import com.opclient.di.commonModule
 import com.opclient.di.desktopModule
 import com.opclient.di.libraryModule
+import com.opclient.di.profileModule
 import com.opclient.di.searchModule
+import com.opclient.di.settingsModule
 import com.opclient.di.subjectModule
 import com.opclient.ui.theme.AppTheme
 import io.github.aakira.napier.DebugAntilog
@@ -17,7 +19,7 @@ import org.koin.core.context.startKoin
 fun main() {
     Napier.base(DebugAntilog())
     startKoin {
-        modules(commonModule, desktopModule, searchModule, authorModule, subjectModule, libraryModule, bookModule)
+        modules(commonModule, desktopModule, settingsModule, searchModule, authorModule, subjectModule, libraryModule, bookModule, profileModule)
     }
     application {
         Window(
