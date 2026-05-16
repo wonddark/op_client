@@ -152,5 +152,6 @@ private fun SubjectWorkRow(work: SubjectWork, onBookClick: (String) -> Unit) {
             )
         },
         onClick = { onBookClick(work.key) },
+        modifier = Modifier.padding(horizontal = 16.dp),
     )
 }
