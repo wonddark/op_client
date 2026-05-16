@@ -121,6 +121,7 @@ fun SearchScreen(
                                     title = book.title,
                                     author = book.author,
                                     subject = book.primarySubject,
+                                    firstPublishYear = book.firstPublishYear,
                                     coverContent = {
                                         if (book.coverUrl != null) {
                                             AsyncImage(

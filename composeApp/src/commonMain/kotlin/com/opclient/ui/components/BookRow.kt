@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
@@ -29,6 +30,7 @@ fun BookRow(
     title: String,
     author: String,
     subject: String? = null,
+    firstPublishYear: Int? = null,
     coverWidth: Dp = 34.dp,
     coverHeight: Dp = 48.dp,
     coverContent: @Composable BoxScope.() -> Unit = {},
@@ -38,6 +40,11 @@ fun BookRow(
 ) {
     val colors = AppThemeTokens.colors
     val typography = AppThemeTokens.typography
+    val authorLine = if (firstPublishYear != null) {
+        "${author.uppercase(Locale.ROOT)} · $firstPublishYear"
+    } else {
+        author.uppercase(Locale.ROOT)
+    }
 
     Row(
         modifier = modifier
@@ -54,9 +61,14 @@ fun BookRow(
         )
         Spacer(Modifier.width(10.dp))
         Column(modifier = Modifier.weight(1f).padding(top = 2.dp)) {
-            BasicText(text = title, style = typography.bookTitle.copy(color = colors.textPrimary))
+            BasicText(
+                text = title,
+                style = typography.bookTitle.copy(color = colors.textPrimary),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
             Spacer(Modifier.height(3.dp))
-            BasicText(text = author.uppercase(Locale.ROOT), style = typography.bookAuthor.copy(color = colors.textSecondary))
+            BasicText(text = authorLine, style = typography.bookAuthor.copy(color = colors.textSecondary))
             if (subject != null) {
                 Spacer(Modifier.height(5.dp))
                 SubjectTag(text = subject)
