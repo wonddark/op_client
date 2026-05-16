@@ -34,12 +34,12 @@ fun SubjectBrowseScreen(
     Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
         SectionLabel(
             text = "DISCOVER",
-            modifier = Modifier.padding(horizontal = 16.dp, top = 16.dp, bottom = 4.dp),
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp),
         )
         BasicText(
             text = "Explore books by subject. Tap a category to browse its collection.",
             style = typography.body.copy(color = colors.textSecondary),
-            modifier = Modifier.padding(horizontal = 16.dp, bottom = 16.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         )
         if (uiState.subjects.isEmpty()) {
             Box(
