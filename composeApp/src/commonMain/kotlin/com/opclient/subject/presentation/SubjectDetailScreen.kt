@@ -2,6 +2,7 @@ package com.opclient.subject.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -67,7 +68,7 @@ private fun SubjectDetailScrollContent(
     viewModel: SubjectDetailViewModel,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()),
     ) {
         SecondaryButton(
             text = "← BACK",
@@ -111,7 +112,7 @@ private fun SubjectDetailLazyContent(
     LaunchedEffect(shouldLoadMore) {
         if (shouldLoadMore) viewModel.onIntent(SubjectDetailIntent.LoadMore)
     }
-    LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
+    LazyColumn(state = listState, modifier = Modifier.fillMaxSize().statusBarsPadding()) {
         item {
             SecondaryButton(
                 text = "← BACK",

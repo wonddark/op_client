@@ -3,6 +3,7 @@ package com.opclient.author.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -52,7 +53,7 @@ fun AuthorDetailScreen(
         )
         DetailStatus.Success -> {
             val author = uiState.author ?: return
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
                 item {
                     SecondaryButton(
                         text = "← BACK",
