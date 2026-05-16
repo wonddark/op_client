@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.opclient.core.ApiError
+import com.opclient.platform.PlatformConfig
 import com.opclient.searchinside.presentation.SearchInsideIntent
 import com.opclient.searchinside.presentation.SearchInsideViewModel
 import com.opclient.ui.components.BookRow
@@ -115,7 +118,22 @@ fun SearchScreen(
                             text = "RESULTS · ${uiState.totalFound} BOOKS",
                             modifier = Modifier.padding(bottom = 8.dp),
                         )
-                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        val listState = rememberLazyListState()
+                        if (PlatformConfig.useLazyPagination) {
+                            val nearEnd by remember {
+                                derivedStateOf {
+                                    val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+                                    val total = listState.layoutInfo.totalItemsCount
+                                    total > 0 && lastVisible >= total - 3
+                                }
+                            }
+                            LaunchedEffect(nearEnd) {
+                                if (nearEnd && uiState.canLoadMore && uiState.status != SearchStatus.LoadingMore) {
+                                    viewModel.onIntent(SearchIntent.LoadMore)
+                                }
+                            }
+                        }
+                        LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                             items(uiState.books, key = { it.key }) { book ->
                                 BookRow(
                                     title = book.title,
@@ -139,7 +157,7 @@ fun SearchScreen(
                                     onClick = { onBookClick(book.key) },
                                 )
                             }
-                            if (uiState.canLoadMore && uiState.status != SearchStatus.LoadingMore) {
+                            if (!PlatformConfig.useLazyPagination && uiState.canLoadMore && uiState.status != SearchStatus.LoadingMore) {
                                 item {
                                     Box(
                                         modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
