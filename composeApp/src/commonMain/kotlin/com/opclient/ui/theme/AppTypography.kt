@@ -5,7 +5,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.opclient.resources.Res
@@ -26,31 +25,15 @@ data class AppTypography(
 
 @Composable
 fun josefinSlabFamily(): FontFamily {
-    val light = Font(
-        resource = Res.font.JosefinSlab,
-        weight = FontWeight.Light,
-        variationSettings = FontVariation.Settings(FontVariation.weight(300f)),
-    )
-    val medium = Font(
-        resource = Res.font.JosefinSlab,
-        weight = FontWeight.Medium,
-        variationSettings = FontVariation.Settings(FontVariation.weight(500f)),
-    )
+    val light  = Font(resource = Res.font.JosefinSlab, weight = FontWeight.Light)
+    val medium = Font(resource = Res.font.JosefinSlab, weight = FontWeight.Medium)
     return remember(light, medium) { FontFamily(light, medium) }
 }
 
 @Composable
 fun mavenProFamily(): FontFamily {
-    val regular = Font(
-        resource = Res.font.MavenPro,
-        weight = FontWeight.Normal,
-        variationSettings = FontVariation.Settings(FontVariation.weight(400f)),
-    )
-    val medium = Font(
-        resource = Res.font.MavenPro,
-        weight = FontWeight.Medium,
-        variationSettings = FontVariation.Settings(FontVariation.weight(500f)),
-    )
+    val regular = Font(resource = Res.font.MavenPro, weight = FontWeight.Normal)
+    val medium  = Font(resource = Res.font.MavenPro, weight = FontWeight.Medium)
     return remember(regular, medium) { FontFamily(regular, medium) }
 }
 
