@@ -26,3 +26,10 @@ data class SubjectSuggestionDto(
     val name: String,
     @SerialName("work_count") val workCount: Int = 0,
 )
+
+@Serializable
+data class SubjectSearchResponseDto(
+    val numFound: Int,
+    val start: Int,
+    val docs: List<SubjectSuggestionDto>,
+)

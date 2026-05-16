@@ -16,6 +16,6 @@ class SubjectApiClient(httpClient: HttpClient) :
         )
     }
 
-    suspend fun searchSubjects(query: String): Result<List<SubjectSuggestionDto>, ApiError> =
+    suspend fun searchSubjects(query: String): Result<SubjectSearchResponseDto, ApiError> =
         get(path = "/search/subjects.json", queryParams = mapOf("q" to query))
 }

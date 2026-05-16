@@ -38,5 +38,5 @@ class SubjectRepositoryImpl(
     }
 
     override suspend fun searchSubjects(query: String): Result<List<String>, ApiError> =
-        apiClient.searchSubjects(query).map { dtos -> dtos.map { it.name } }
+        apiClient.searchSubjects(query).map { response -> response.docs.map { it.name } }
 }
