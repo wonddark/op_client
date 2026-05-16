@@ -14,6 +14,6 @@ val subjectModule: Module = module {
     single { SubjectCache() }
     factory { SubjectApiClient(get()) }
     single<SubjectRepository> { SubjectRepositoryImpl(apiClient = get(), cache = get()) }
-    viewModel { SubjectBrowseViewModel() }
+    viewModel { SubjectBrowseViewModel(get()) }
     viewModel { SubjectDetailViewModel(get()) }
 }

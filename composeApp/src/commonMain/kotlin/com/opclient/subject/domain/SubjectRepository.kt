@@ -9,4 +9,6 @@ interface SubjectRepository {
         limit: Int = 12,
         offset: Int = 0,
     ): Result<SubjectPage, ApiError>
+
+    suspend fun searchSubjects(query: String): Result<List<String>, ApiError>
 }

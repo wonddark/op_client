@@ -20,3 +20,9 @@ data class SubjectWorkDto(
 
 @Serializable
 data class SubjectWorkAuthorDto(val name: String? = null)
+
+@Serializable
+data class SubjectSuggestionDto(
+    val name: String,
+    @SerialName("work_count") val workCount: Int = 0,
+)

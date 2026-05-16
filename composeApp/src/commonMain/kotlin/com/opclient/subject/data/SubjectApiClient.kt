@@ -15,4 +15,7 @@ class SubjectApiClient(httpClient: HttpClient) :
             queryParams = mapOf("limit" to "$limit", "offset" to "$offset"),
         )
     }
+
+    suspend fun searchSubjects(query: String): Result<List<SubjectSuggestionDto>, ApiError> =
+        get(path = "/search/subjects.json", queryParams = mapOf("q" to query))
 }

@@ -2,6 +2,7 @@ package com.opclient.subject.data
 
 import com.opclient.core.ApiError
 import com.opclient.core.Result
+import com.opclient.core.map
 import com.opclient.subject.domain.SubjectPage
 import com.opclient.subject.domain.SubjectRepository
 
@@ -35,4 +36,7 @@ class SubjectRepositoryImpl(
             is Result.Failure -> result
         }
     }
+
+    override suspend fun searchSubjects(query: String): Result<List<String>, ApiError> =
+        apiClient.searchSubjects(query).map { dtos -> dtos.map { it.name } }
 }
