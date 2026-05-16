@@ -5,15 +5,34 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SearchInsideResponseDto(
-    @SerialName("numFound") val numFound: Int = 0,
-    @SerialName("docs") val docs: List<SearchInsideDocDto> = emptyList(),
+    val hits: SearchInsideHitsWrapperDto,
 )
 
 @Serializable
-data class SearchInsideDocDto(
-    val key: String? = null,
+data class SearchInsideHitsWrapperDto(
+    val hits: List<SearchInsideHitDto> = emptyList(),
+)
+
+@Serializable
+data class SearchInsideHitDto(
+    val highlight: SearchInsideHighlightDto? = null,
+    val edition: SearchInsideEditionDto? = null,
+)
+
+@Serializable
+data class SearchInsideHighlightDto(
+    val text: List<String> = emptyList(),
+)
+
+@Serializable
+data class SearchInsideEditionDto(
+    @SerialName("work_key") val workKey: String? = null,
     val title: String? = null,
-    @SerialName("author_name") val authorName: List<String>? = null,
-    @SerialName("cover_i") val coverId: Int? = null,
-    val text: List<String>? = null,
+    val authors: List<SearchInsideAuthorDto> = emptyList(),
+    @SerialName("cover_url") val coverUrl: String? = null,
+)
+
+@Serializable
+data class SearchInsideAuthorDto(
+    val name: String? = null,
 )

@@ -12,9 +12,7 @@ class SearchInsideRepositoryImpl(
     override suspend fun search(query: String): Result<List<SearchInsideResult>, ApiError> =
         when (val result = apiClient.search(query)) {
             is Result.Success -> Result.Success(
-                result.value.docs
-                    .filter { it.key != null }
-                    .map { it.toDomain() },
+                result.value.hits.hits.mapNotNull { it.toDomain() },
             )
             is Result.Failure -> result
         }

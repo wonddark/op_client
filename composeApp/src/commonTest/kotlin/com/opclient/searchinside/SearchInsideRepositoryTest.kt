@@ -26,16 +26,19 @@ class SearchInsideRepositoryTest {
     fun search_parsesResults() = runTest {
         val json = """
             {
-              "numFound": 1,
-              "docs": [
-                {
-                  "key": "/works/OL82563W",
-                  "title": "Dune",
-                  "author_name": ["Frank Herbert"],
-                  "cover_i": 8368541,
-                  "text": ["The spice must flow."]
-                }
-              ]
+              "hits": {
+                "hits": [
+                  {
+                    "highlight": {"text": ["The spice must flow."]},
+                    "edition": {
+                      "work_key": "/works/OL82563W",
+                      "title": "Dune",
+                      "authors": [{"name": "Frank Herbert"}],
+                      "cover_url": "//covers.openlibrary.org/b/id/8368541-M.jpg"
+                    }
+                  }
+                ]
+              }
             }
         """.trimIndent()
         val engine = MockEngine {
@@ -53,8 +56,30 @@ class SearchInsideRepositoryTest {
     }
 
     @Test
+    fun search_stripsHighlightMarkers() = runTest {
+        val json = """
+            {
+              "hits": {
+                "hits": [
+                  {
+                    "highlight": {"text": ["The {{{spice}}} must flow."]},
+                    "edition": {"work_key": "/works/OL82563W", "title": "Dune", "authors": []}
+                  }
+                ]
+              }
+            }
+        """.trimIndent()
+        val engine = MockEngine {
+            respond(json, HttpStatusCode.OK, headersOf(HttpHeaders.ContentType, "application/json"))
+        }
+        val result = makeRepo(engine).search("spice")
+        assertIs<Result.Success<List<SearchInsideResult>>>(result)
+        assertEquals("The spice must flow.", result.value[0].passage)
+    }
+
+    @Test
     fun search_emptyResponse_returnsEmptyList() = runTest {
-        val json = """{"numFound": 0, "docs": []}"""
+        val json = """{"hits": {"hits": []}}"""
         val engine = MockEngine {
             respond(json, HttpStatusCode.OK, headersOf(HttpHeaders.ContentType, "application/json"))
         }
@@ -73,14 +98,21 @@ class SearchInsideRepositoryTest {
     }
 
     @Test
-    fun search_filtersDocsWithNullKey() = runTest {
+    fun search_filtersHitsWithNullWorkKey() = runTest {
         val json = """
             {
-              "numFound": 2,
-              "docs": [
-                {"key": "/works/OL1W", "title": "Book A", "text": ["passage A"]},
-                {"title": "No Key Book", "text": ["passage B"]}
-              ]
+              "hits": {
+                "hits": [
+                  {
+                    "highlight": {"text": ["passage A"]},
+                    "edition": {"work_key": "/works/OL1W", "title": "Book A", "authors": []}
+                  },
+                  {
+                    "highlight": {"text": ["passage B"]},
+                    "edition": {"title": "No Key Book", "authors": []}
+                  }
+                ]
+              }
             }
         """.trimIndent()
         val engine = MockEngine {

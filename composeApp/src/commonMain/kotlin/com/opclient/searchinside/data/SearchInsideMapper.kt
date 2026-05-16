@@ -2,11 +2,16 @@ package com.opclient.searchinside.data
 
 import com.opclient.searchinside.domain.SearchInsideResult
 
-fun SearchInsideDocDto.toDomain(): SearchInsideResult =
-    SearchInsideResult(
-        workKey = key!!,
-        title = title ?: "Unknown",
-        authorName = authorName?.firstOrNull(),
-        coverUrl = coverId?.let { "https://covers.openlibrary.org/b/id/$it-M.jpg" },
-        passage = text?.firstOrNull() ?: "",
+fun SearchInsideHitDto.toDomain(): SearchInsideResult? {
+    val workKey = edition?.workKey ?: return null
+    val passage = highlight?.text?.firstOrNull()
+        ?.replace("{{{", "")
+        ?.replace("}}}", "") ?: return null
+    return SearchInsideResult(
+        workKey = workKey,
+        title = edition.title ?: "Unknown",
+        authorName = edition.authors.firstOrNull()?.name,
+        coverUrl = edition.coverUrl?.let { if (it.startsWith("//")) "https:$it" else it },
+        passage = passage,
     )
+}
