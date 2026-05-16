@@ -12,8 +12,9 @@ fun AppTheme(
     content: @Composable () -> Unit,
 ) {
     val colors = if (darkTheme) DarkColors else LightColors
-    val fontFamily = jostFontFamily()
-    val typography = remember(fontFamily) { buildTypography(fontFamily) }
+    val headingFamily = josefinSlabFamily()
+    val bodyFamily = mavenProFamily()
+    val typography = remember(headingFamily, bodyFamily) { buildTypography(headingFamily, bodyFamily) }
     CompositionLocalProvider(
         LocalAppColors provides colors,
         LocalAppTypography provides typography,
