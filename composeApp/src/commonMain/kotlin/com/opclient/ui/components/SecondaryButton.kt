@@ -27,7 +27,7 @@ fun SecondaryButton(
         modifier = modifier
             .border(width = 1.dp, color = colors.border, shape = RoundedCornerShape(AppShapes.radius))
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 7.dp),
+            .padding(horizontal = 12.dp, vertical = 9.dp),
         contentAlignment = Alignment.Center,
     ) {
         BasicText(

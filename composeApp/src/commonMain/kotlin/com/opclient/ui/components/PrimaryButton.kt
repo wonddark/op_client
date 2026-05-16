@@ -29,7 +29,7 @@ fun PrimaryButton(
         modifier = modifier
             .background(color = bgColor, shape = RoundedCornerShape(AppShapes.radius))
             .clickable(enabled = enabled, onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 10.dp),
         contentAlignment = Alignment.Center,
     ) {
         BasicText(
