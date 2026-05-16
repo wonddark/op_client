@@ -33,14 +33,14 @@ fun jostFontFamily(): FontFamily {
 }
 
 fun buildTypography(fontFamily: FontFamily) = AppTypography(
-    screenTitle  = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 14.sp, letterSpacing = 3.sp),
-    sectionLabel = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 9.sp,  letterSpacing = 2.5.sp),
-    navLabel     = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 8.sp,  letterSpacing = 1.5.sp),
-    bookTitle    = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Medium, fontSize = 13.sp, letterSpacing = 0.3.sp),
-    bookAuthor   = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 10.sp, letterSpacing = 2.sp),
-    tag          = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Normal, fontSize = 9.sp,  letterSpacing = 1.sp),
-    body         = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 12.sp, letterSpacing = 0.sp),
-    button       = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Medium, fontSize = 9.sp,  letterSpacing = 2.sp),
+    screenTitle  = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 16.sp, letterSpacing = 3.sp),
+    sectionLabel = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 11.sp, letterSpacing = 2.5.sp),
+    navLabel     = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 10.sp, letterSpacing = 1.5.sp),
+    bookTitle    = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Medium, fontSize = 14.sp, letterSpacing = 0.3.sp),
+    bookAuthor   = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 12.sp, letterSpacing = 2.sp),
+    tag          = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Normal, fontSize = 11.sp, letterSpacing = 1.sp),
+    body         = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Light,  fontSize = 14.sp, letterSpacing = 0.sp),
+    button       = TextStyle(fontFamily = fontFamily, fontWeight = FontWeight.Medium, fontSize = 12.sp, letterSpacing = 2.sp),
 )
 
 val LocalAppTypography = staticCompositionLocalOf<AppTypography> {
