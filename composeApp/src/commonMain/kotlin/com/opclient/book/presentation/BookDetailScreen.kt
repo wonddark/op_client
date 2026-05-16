@@ -1,8 +1,10 @@
 // composeApp/src/commonMain/kotlin/com/opclient/book/presentation/BookDetailScreen.kt
 package com.opclient.book.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
@@ -19,12 +22,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.opclient.presentation.DetailStatus
-import com.opclient.subject.domain.SubjectWork
 import com.opclient.library.domain.Shelf
 import com.opclient.ui.components.BookRow
 import com.opclient.ui.components.PrimaryButton
@@ -66,19 +70,40 @@ fun BookDetailScreen(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
             ) {
-                SecondaryButton(
-                    text = "← BACK",
-                    onClick = onBack,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                )
-                if (book.coverUrl != null) {
-                    AsyncImage(
-                        model = book.coverUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        placeholder = ColorPainter(colors.surface2),
-                        error = ColorPainter(colors.surface2),
-                        modifier = Modifier.fillMaxWidth().height(220.dp),
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    if (book.coverUrl != null) {
+                        AsyncImage(
+                            model = book.coverUrl,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            placeholder = ColorPainter(colors.surface2),
+                            error = ColorPainter(colors.surface2),
+                            modifier = Modifier.fillMaxWidth().height(280.dp),
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(280.dp)
+                                .background(colors.surface2),
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    listOf(Color.Black.copy(alpha = 0.5f), Color.Transparent),
+                                ),
+                            ),
+                    )
+                    SecondaryButton(
+                        text = "← BACK",
+                        onClick = onBack,
+                        modifier = Modifier
+                            .statusBarsPadding()
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
                     )
                 }
                 SectionLabel(
@@ -100,13 +125,6 @@ fun BookDetailScreen(
                         style = typography.bookAuthor.copy(color = colors.textSecondary),
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                     )
-                }
-                if (book.subjects.isNotEmpty()) {
-                    FlowRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                        book.subjects.take(8).forEach { subject ->
-                            SubjectTag(text = subject, modifier = Modifier.padding(end = 4.dp, bottom = 4.dp))
-                        }
-                    }
                 }
                 Row(
                     modifier = Modifier
@@ -135,6 +153,13 @@ fun BookDetailScreen(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     )
                 }
+                if (book.subjects.isNotEmpty()) {
+                    FlowRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                        book.subjects.take(8).forEach { subject ->
+                            SubjectTag(text = subject, modifier = Modifier.padding(end = 4.dp, bottom = 4.dp))
+                        }
+                    }
+                }
                 if (uiState.relatedWorks.isNotEmpty()) {
                     SectionLabel(
                         text = "More in ${uiState.relatedSubjectName}",
@@ -155,6 +180,7 @@ fun BookDetailScreen(
                                 )
                             },
                             onClick = { onBookClick(work.key) },
+                            modifier = Modifier.padding(horizontal = 16.dp),
                         )
                     }
                 }
