@@ -10,7 +10,6 @@ import com.opclient.di.desktopModule
 import com.opclient.di.libraryModule
 import com.opclient.di.listsModule
 import com.opclient.di.profileModule
-import com.opclient.di.recentChangesModule
 import com.opclient.di.searchInsideModule
 import com.opclient.di.searchModule
 import com.opclient.di.settingsModule
@@ -25,7 +24,7 @@ fun main() {
     startKoin {
         modules(commonModule, desktopModule, settingsModule, searchModule, searchInsideModule,
                 authorModule, subjectModule, libraryModule, bookModule, profileModule,
-                recentChangesModule, authModule, listsModule)
+                authModule, listsModule)
     }
     application {
         Window(

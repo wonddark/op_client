@@ -25,7 +25,6 @@ class NavigationViewModel : ViewModel() {
                 Destination.SEARCH -> listOf(Screen.Search)
                 Destination.BROWSE -> listOf(Screen.SubjectList)
                 Destination.LIBRARY -> listOf(Screen.Library)
-                Destination.CHANGES -> listOf(Screen.RecentChanges)
             }
         }
     }

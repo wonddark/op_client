@@ -9,7 +9,6 @@ import com.opclient.di.commonModule
 import com.opclient.di.libraryModule
 import com.opclient.di.listsModule
 import com.opclient.di.profileModule
-import com.opclient.di.recentChangesModule
 import com.opclient.di.searchInsideModule
 import com.opclient.di.searchModule
 import com.opclient.di.settingsModule
@@ -27,7 +26,7 @@ class OpClientApplication : Application() {
             androidContext(this@OpClientApplication)
             modules(commonModule, androidModule, settingsModule, searchModule, searchInsideModule,
                     authorModule, subjectModule, libraryModule, bookModule, profileModule,
-                    recentChangesModule, authModule, listsModule)
+                    authModule, listsModule)
         }
     }
 }

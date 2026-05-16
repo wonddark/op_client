@@ -14,7 +14,6 @@ import com.opclient.lists.presentation.ListsScreen
 import com.opclient.navigation.NavigationViewModel
 import com.opclient.profile.presentation.ProfileScreen
 import com.opclient.navigation.Screen
-import com.opclient.recentchanges.presentation.RecentChangesScreen
 import com.opclient.search.presentation.SearchScreen
 import com.opclient.subject.presentation.SubjectBrowseScreen
 import com.opclient.subject.presentation.SubjectDetailScreen
@@ -65,10 +64,6 @@ fun App() {
             )
             Screen.Profile -> ProfileScreen(
                 onBack = { navVm.navigateBack() },
-            )
-            Screen.RecentChanges -> RecentChangesScreen(
-                onBookClick = { key -> navVm.navigateTo(Screen.BookDetail(key)) },
-                onAuthorClick = { key -> navVm.navigateTo(Screen.AuthorDetail(key)) },
             )
             Screen.Lists -> ListsScreen(
                 onBack = { navVm.navigateBack() },
