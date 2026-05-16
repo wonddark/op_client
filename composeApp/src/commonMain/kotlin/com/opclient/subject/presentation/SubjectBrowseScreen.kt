@@ -3,6 +3,8 @@ package com.opclient.subject.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,12 +18,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.opclient.platform.PlatformConfig
 import com.opclient.ui.components.FilterChip
 import com.opclient.ui.components.SectionLabel
 import com.opclient.ui.theme.AppThemeTokens
 import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SubjectBrowseScreen(
     onSubjectClick: (String) -> Unit,
@@ -31,40 +36,85 @@ fun SubjectBrowseScreen(
     val typography = AppThemeTokens.typography
     val colors = AppThemeTokens.colors
 
-    Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
-        SectionLabel(
-            text = "DISCOVER",
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp),
-        )
-        BasicText(
-            text = "Explore books by subject. Tap a category to browse its collection.",
-            style = typography.body.copy(color = colors.textSecondary),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-        )
-        if (uiState.subjects.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
+    if (PlatformConfig.useLazyPagination) {
+        Box(
+            modifier = Modifier.fillMaxSize().statusBarsPadding(),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (uiState.subjects.isEmpty()) {
                 BasicText(
                     text = "No subjects available.",
                     style = typography.body.copy(color = colors.textSecondary),
                 )
-            }
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                items(uiState.subjects) { subject ->
-                    FilterChip(
-                        label = subject,
-                        selected = false,
-                        onToggle = { onSubjectClick(subject) },
+            } else {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                ) {
+                    SectionLabel(
+                        text = "DISCOVER",
+                        modifier = Modifier.padding(bottom = 8.dp),
                     )
+                    BasicText(
+                        text = "Explore books by subject.\nTap a category to browse its collection.",
+                        style = typography.body.copy(
+                            color = colors.textSecondary,
+                            textAlign = TextAlign.Center,
+                        ),
+                        modifier = Modifier.padding(bottom = 24.dp),
+                    )
+                    FlowRow(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        uiState.subjects.forEach { subject ->
+                            FilterChip(
+                                label = subject,
+                                selected = false,
+                                onToggle = { onSubjectClick(subject) },
+                                modifier = Modifier.padding(horizontal = 4.dp),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+            SectionLabel(
+                text = "DISCOVER",
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp),
+            )
+            BasicText(
+                text = "Explore books by subject. Tap a category to browse its collection.",
+                style = typography.body.copy(color = colors.textSecondary),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            )
+            if (uiState.subjects.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    BasicText(
+                        text = "No subjects available.",
+                        style = typography.body.copy(color = colors.textSecondary),
+                    )
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    items(uiState.subjects) { subject ->
+                        FilterChip(
+                            label = subject,
+                            selected = false,
+                            onToggle = { onSubjectClick(subject) },
+                        )
+                    }
                 }
             }
         }
