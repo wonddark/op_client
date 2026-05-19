@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
 import com.opclient.ui.theme.AppShapes
 import java.util.Locale
@@ -18,8 +19,8 @@ import com.opclient.ui.theme.AppThemeTokens
 fun PrimaryButton(
     text: String,
     onClick: () -> Unit,
-    enabled: Boolean = true,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     val colors = AppThemeTokens.colors
     val typography = AppThemeTokens.typography

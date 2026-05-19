@@ -159,7 +159,7 @@ fun BookDetailScreen(
                     if (book.description != null) {
                         BasicText(
                             text = book.description,
-                            style = typography.bookAuthor.copy(color = colors.textPrimary),
+                            style = typography.body.copy(color = colors.textPrimary),
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                         )
                     }

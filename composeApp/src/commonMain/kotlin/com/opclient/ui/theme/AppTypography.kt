@@ -40,12 +40,12 @@ fun mavenProFamily(): FontFamily {
 fun buildTypography(headingFamily: FontFamily, bodyFamily: FontFamily) = AppTypography(
     screenTitle  = TextStyle(fontFamily = headingFamily, fontWeight = FontWeight.Light,  fontSize = 16.sp, letterSpacing = 3.sp),
     sectionLabel = TextStyle(fontFamily = headingFamily, fontWeight = FontWeight.Light,  fontSize = 11.sp, letterSpacing = 2.5.sp),
-    bookTitle    = TextStyle(fontFamily = headingFamily, fontWeight = FontWeight.Medium, fontSize = 14.sp, letterSpacing = 0.3.sp),
+    bookTitle    = TextStyle(fontFamily = headingFamily, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, letterSpacing = 0.3.sp),
     navLabel     = TextStyle(fontFamily = bodyFamily,    fontWeight = FontWeight.Normal, fontSize = 10.sp, letterSpacing = 1.5.sp),
-    bookAuthor   = TextStyle(fontFamily = bodyFamily,    fontWeight = FontWeight.Normal, fontSize = 12.sp, letterSpacing = 2.sp),
+    bookAuthor   = TextStyle(fontFamily = bodyFamily,    fontWeight = FontWeight.Normal, fontSize = 12.sp, letterSpacing = 0.sp),
     tag          = TextStyle(fontFamily = bodyFamily,    fontWeight = FontWeight.Normal, fontSize = 11.sp, letterSpacing = 1.sp),
     body         = TextStyle(fontFamily = bodyFamily,    fontWeight = FontWeight.Normal, fontSize = 14.sp, letterSpacing = 0.sp),
-    button       = TextStyle(fontFamily = bodyFamily,    fontWeight = FontWeight.Medium, fontSize = 12.sp, letterSpacing = 2.sp),
+    button       = TextStyle(fontFamily = bodyFamily,    fontWeight = FontWeight.Medium, fontSize = 12.sp, letterSpacing = 0.sp),
 )
 
 val LocalAppTypography = staticCompositionLocalOf<AppTypography> {
