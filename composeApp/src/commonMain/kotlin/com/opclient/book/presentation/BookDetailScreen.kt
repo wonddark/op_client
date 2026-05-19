@@ -21,6 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -65,122 +69,146 @@ fun BookDetailScreen(
         )
         DetailStatus.Success -> {
             val book = uiState.book ?: return
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-            ) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    if (book.coverUrl != null) {
-                        AsyncImage(
-                            model = book.coverUrl,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            placeholder = ColorPainter(colors.surface2),
-                            error = ColorPainter(colors.surface2),
-                            modifier = Modifier.fillMaxWidth().height(280.dp),
-                        )
-                    } else {
+            var showCoverOverlay by remember { mutableStateOf(false) }
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        if (book.coverUrl != null) {
+                            AsyncImage(
+                                model = book.coverUrl,
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                placeholder = ColorPainter(colors.surface2),
+                                error = ColorPainter(colors.surface2),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
+                                    .clickable { showCoverOverlay = true },
+                            )
+                        } else {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
+                                    .background(colors.surface2),
+                            )
+                        }
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(280.dp)
-                                .background(colors.surface2),
+                                .height(120.dp)
+                                .background(
+                                    Brush.verticalGradient(
+                                        listOf(Color.Black.copy(alpha = 0.5f), Color.Transparent),
+                                    ),
+                                ),
+                        )
+                        SecondaryButton(
+                            text = "← BACK",
+                            onClick = onBack,
+                            modifier = Modifier
+                                .statusBarsPadding()
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .background(
-                                Brush.verticalGradient(
-                                    listOf(Color.Black.copy(alpha = 0.5f), Color.Transparent),
-                                ),
-                            ),
-                    )
-                    SecondaryButton(
-                        text = "← BACK",
-                        onClick = onBack,
-                        modifier = Modifier
-                            .statusBarsPadding()
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                    )
-                }
-                SectionLabel(
-                    text = book.title,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                )
-                book.authors.forEach { author ->
-                    BasicText(
-                        text = author.name,
-                        style = typography.bookAuthor.copy(color = colors.textPrimary),
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 2.dp)
-                            .clickable { onAuthorClick(author.key) },
-                    )
-                }
-                if (book.firstPublishDate != null) {
-                    BasicText(
-                        text = book.firstPublishDate,
-                        style = typography.bookAuthor.copy(color = colors.textSecondary),
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Shelf.entries.forEach { shelf ->
-                        if (shelf == uiState.currentShelf) {
-                            PrimaryButton(
-                                text = shelf.label,
-                                onClick = { viewModel.onIntent(BookDetailIntent.RemoveFromLibrary) },
-                            )
-                        } else {
-                            SecondaryButton(
-                                text = shelf.label,
-                                onClick = { viewModel.onIntent(BookDetailIntent.SetShelf(shelf)) },
-                            )
-                        }
-                    }
-                }
-                if (book.description != null) {
-                    BasicText(
-                        text = book.description,
-                        style = typography.bookAuthor.copy(color = colors.textPrimary),
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    )
-                }
-                if (book.subjects.isNotEmpty()) {
-                    FlowRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                        book.subjects.take(8).forEach { subject ->
-                            SubjectTag(text = subject, modifier = Modifier.padding(end = 4.dp, bottom = 4.dp))
-                        }
-                    }
-                }
-                if (uiState.relatedWorks.isNotEmpty()) {
                     SectionLabel(
-                        text = "More in ${uiState.relatedSubjectName}",
+                        text = book.title,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                     )
-                    uiState.relatedWorks.forEach { work ->
-                        BookRow(
-                            title = work.title,
-                            author = work.authorName ?: "",
-                            coverContent = {
-                                AsyncImage(
-                                    model = work.coverUrl,
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                    placeholder = ColorPainter(colors.surface2),
-                                    error = ColorPainter(colors.surface2),
-                                    modifier = Modifier.fillMaxSize(),
+                    book.authors.forEach { author ->
+                        BasicText(
+                            text = author.name,
+                            style = typography.bookAuthor.copy(color = colors.textPrimary),
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 2.dp)
+                                .clickable { onAuthorClick(author.key) },
+                        )
+                    }
+                    if (book.firstPublishDate != null) {
+                        BasicText(
+                            text = book.firstPublishDate,
+                            style = typography.bookAuthor.copy(color = colors.textSecondary),
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Shelf.entries.forEach { shelf ->
+                            if (shelf == uiState.currentShelf) {
+                                PrimaryButton(
+                                    text = shelf.label,
+                                    onClick = { viewModel.onIntent(BookDetailIntent.RemoveFromLibrary) },
                                 )
-                            },
-                            onClick = { onBookClick(work.key) },
-                            modifier = Modifier.padding(horizontal = 16.dp),
+                            } else {
+                                SecondaryButton(
+                                    text = shelf.label,
+                                    onClick = { viewModel.onIntent(BookDetailIntent.SetShelf(shelf)) },
+                                )
+                            }
+                        }
+                    }
+                    if (book.description != null) {
+                        BasicText(
+                            text = book.description,
+                            style = typography.bookAuthor.copy(color = colors.textPrimary),
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        )
+                    }
+                    if (book.subjects.isNotEmpty()) {
+                        FlowRow(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                            book.subjects.take(8).forEach { subject ->
+                                SubjectTag(text = subject, modifier = Modifier.padding(end = 4.dp, bottom = 4.dp))
+                            }
+                        }
+                    }
+                    if (uiState.relatedWorks.isNotEmpty()) {
+                        SectionLabel(
+                            text = "More in ${uiState.relatedSubjectName}",
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                        )
+                        uiState.relatedWorks.forEach { work ->
+                            BookRow(
+                                title = work.title,
+                                author = work.authorName ?: "",
+                                coverContent = {
+                                    AsyncImage(
+                                        model = work.coverUrl,
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop,
+                                        placeholder = ColorPainter(colors.surface2),
+                                        error = ColorPainter(colors.surface2),
+                                        modifier = Modifier.fillMaxSize(),
+                                    )
+                                },
+                                onClick = { onBookClick(work.key) },
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                            )
+                        }
+                    }
+                }
+
+                if (showCoverOverlay && book.coverUrl != null) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.92f))
+                            .clickable { showCoverOverlay = false },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        AsyncImage(
+                            model = book.coverUrl,
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.fillMaxSize(),
                         )
                     }
                 }
